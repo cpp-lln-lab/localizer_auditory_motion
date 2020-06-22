@@ -30,7 +30,7 @@ cfg.eyeTracker    = false;      % Set to 'true' if you are testing in MRI and wa
 %% Engine parameters
 
 % Monitor parameters
-cfg.monitorWidth  	  = 42;  % Monitor Width in cm
+cfg.monitorWidth  	  = 42;  % Monitor Width in cm (x-axis)
 cfg.screenDistance    = 134; % Distance from the screen in cm
 cfg.diameterAperture  = 8;   % Diameter/length of side of aperture in Visual angles
 
@@ -158,6 +158,8 @@ if expParameters.Task1
     expParameters.yDisplacementFixCross        = 0;    % Manual displacement of the fixation cross
     expParameters.fixationCrossColor           = cfg.white;
     expParameters.fixationCrossColorTarget     = cfg.red;
+    expParameters.fixationRadius               = 0.15; % Radius of fixation point (deg)
+
 end
 
 if cfg.debug
