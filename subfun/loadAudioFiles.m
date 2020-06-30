@@ -1,6 +1,7 @@
-function [soundData, freq] = loadAudioFiles(SubjName)
+function [expParameters] = loadAudioFiles(expParameters)
 
-
+% Get parameters
+subjName = expParameters.subjName;
 
 %static Stimuli
 fileName=fullfile('stimuli','Static','Static.wav');
@@ -57,3 +58,6 @@ if length(unique([freq1 freq2 freq3 freq4 freq5 freq6 freq7 freq8 freq9 freq10])
 else
     freq = unique([freq1 freq2 freq3 freq4 freq5 freq6 freq7 freq8 freq9 freq10]);
 end
+
+expParameters.soundData = soundData;
+expParameters.freq = freq;
