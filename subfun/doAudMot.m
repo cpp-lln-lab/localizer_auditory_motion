@@ -52,3 +52,21 @@ elseif isTarget == 1
   end
 
 end
+
+% Start the sound presentation
+PsychPortAudio('FillBuffer',phandle,sound);
+playTime = PsychPortAudio('Start',phandle);
+onset = playtime;
+
+% Draw the fixation cross
+color = expParameters.fixationCrossColor;
+% If this frame shows a target we change the color
+if GetSecs < (onset+targetDuration) && isTarget==1
+    color = expParameters.fixationCrossColorTarget;
+end
+drawFixationCross(cfg, expParameters, color)
+
+% Get the end time
+[~, ~, ~, stopTime} = PsychPortAudio('Stop',phandle);
+
+duration =  stopTime - onset;
