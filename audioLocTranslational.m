@@ -94,6 +94,69 @@ try
 
     WaitSecs(expParameters.onsetDelay);
 
+    %% For Each Block
+
+    stopEverything = 0;
+
+    for iBlock = 1:expParameters.numBlocks
+
+        if stopEverything
+            break;
+        end
+
+        fprintf('\n - Running Block %.0f \n',iBlock)
+
+        eyeTracker('StartRecording', cfg, expParameters);
+
+        % For each event in the block
+        for iEvent = 1:expParameters.numEventsPerBlock
+
+
+            % Check for experiment abortion from operator
+            [keyIsDown, ~, keyCode] = KbCheck(cfg.keyboard);
+            if keyIsDown && keyCode(KbName(cfg.escapeKey))
+                stopEverything = 1;
+                warning('OK let us get out of here')
+                break;
+            end
+
+
+            % set direction, speed of that event and if it is a target
+            thisEvent.trial_type = 'dummy';
+            thisEvent.direction = expParameters.designDirections(iBlock,iEvent);
+            thisEvent.speed = expParameters.designSpeeds(iBlock,iEvent);
+            thisEvent.target = expParameters.designFixationTargets(iBlock,iEvent);
+
+            % play the sounds and collect onset and duration of the event
+            [onset, duration] = doAudMot(cfg, expParameters, thisEvent)
+
+            thisEvent.event = iEvent;
+            thisEvent.block = iBlock;
+            thisEvent.duration = duration;
+            thisEvent.onset = onset - cfg.experimentStart;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 catch
 
   cleanUp()

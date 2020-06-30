@@ -1,65 +1,9 @@
-%% Experiment Parametes
-%% Experimental Design
-% function "experimental_design" while assign the blocks, conditions, and
-% the number of targets that will be used in the motion localizer
-%[names,targets,condition] = experimental_design(nrBlocks,range_targets);
-[names,targets,condition,directions,isTarget] = experimental_design(nrBlocks,numEventsPerBlock,range_targets) ;
-
-numBlocks = length(names);                                                     % Create a variable with the number of blocks in the whole experiment
-
-
-%% FUNCTION
-if strcmp(device,'PC')
-    DrawFormattedText(w,'Waiting For Trigger',...
-        'center', 'center', black);
-    Screen('Flip', w);
-
-    % press key
-    KbWait();
-    KeyIsDown=1;
-    while KeyIsDown>0
-        [KeyIsDown, ~, ~]=KbCheck;
-    end
-
-% open Serial Port "SerPor" - COM1 (BAUD RATE: 11520)
-elseif strcmp(device,'Scanner')
-    DrawFormattedText(w,'Waiting For Trigger','center', 'center', black);
-    Screen('Flip', w);
-    SerPor = MT_portAndTrigger;
-    Screen('Flip', w);
-end
-
-%% Experiment Start (Main Loop)
-experimentStartTime = GetSecs;
-
-%% To correct for the y-axis problem inside the scanner
-if strcmp(device,'Scanner')
-    adjusted_yAxis = 2/3*th;        %  where the lower 1/3 of the screen is not appearing because of coil
-elseif strcmp(device,'PC')
-    adjusted_yAxis = th;            %  y-axis is the same, no changes
-end
-
-%% Pixels per degree
-[mirrorPixelPerDegree] = mirror2Pixels (winRect,v_dist,mirror_width) ;         % Calculate pixel per degree on the mirror surface
-
-%% fixation coordiates
-fix_cord = [[tw/2 adjusted_yAxis/2]-fix_r*mirrorPixelPerDegree [tw/2 adjusted_yAxis/2]+fix_r*mirrorPixelPerDegree];
-
-%% Experiment start
-% The experment will wait (initial_wait)  Secs before running the stimuli
-Screen('FillOval', w, uint8(white), fix_cord);	% draw fixation dot (flip erases it)
-blank_onset=Screen('Flip', w);
-WaitSecs('UntilTime', blank_onset + initial_wait);
-
-targetTime   = [];
-responseKey  = [];
-responseTime = [];
 
 eventOnsets=zeros(numBlocks,numEventsPerBlock);
 eventEnds=zeros(numBlocks,numEventsPerBlock);
 eventDurations=zeros(numBlocks,numEventsPerBlock);
 
-responsesPerBlock=zeros(numBlocks,1);
+responsesPerBlock=zeros(numBlocks,1);6
 
 playTime = zeros(numBlocks,1);
 
