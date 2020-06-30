@@ -36,8 +36,8 @@ try
     % % Convert some values from degrees to pixels
     % cfg = deg2Pix('diameterAperture', cfg, cfg);
     % expParameters = deg2Pix('dotSize', expParameters, cfg);
-    %
-    %
+
+
     [el] = eyeTracker('Calibration', cfg, expParameters);
 
     % % % REFACTOR THIS FUNCTION
@@ -66,7 +66,33 @@ try
 
     end
 
+    % Wait for space key to be pressed
+    pressSpace4me
 
+    % prepare the KbQueue to collect responses
+    getResponse('init', cfg, expParameters, 1);
+    getResponse('start', cfg, expParameters, 1);
+
+    % Show instructions
+    if expParameters.Task1
+        DrawFormattedText(cfg.win,expParameters.TaskInstruction,...
+            'center', 'center', cfg.textColor);
+        Screen('Flip', cfg.win);
+    end
+
+    % Wait for Trigger from Scanner
+    wait4Trigger(cfg)
+
+    % Show the fixation cross
+    if expParameters.Task1
+        drawFixationCross(cfg, expParameters, expParameters.fixationCrossColor)
+        Screen('Flip',cfg.win);
+    end
+
+    %% Experiment Start
+    cfg.experimentStart = GetSecs;
+
+    WaitSecs(expParameters.onsetDelay);
 
 catch
 
