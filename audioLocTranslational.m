@@ -49,8 +49,8 @@ try
   'direction', 'speed', 'target', 'event', 'block');
 
   % % % REFACTOR THIS FUNCTION
-  [soundData, freq] = loadAudioFiles(SubjName);
-  phandle = PsychPortAudio('Open',[],[],1,freq,2);
+  [expParameters] = loadAudioFiles(cfg, expParameters);
+  phandle = PsychPortAudio('Open',[],[],1,expParameters.freq,2);
   % % %
 
   % Prepare for fixation Cross
@@ -128,7 +128,7 @@ try
       thisEvent.target = expParameters.designFixationTargets(iBlock,iEvent);
 
       % play the sounds and collect onset and duration of the event
-      [onset, duration] = doAudMot(cfg, expParameters, thisEvent)
+      [onset, duration] = doAudMot(cfg, expParameters, thisEvent, phandle);
 
       thisEvent.event = iEvent;
       thisEvent.block = iBlock;
