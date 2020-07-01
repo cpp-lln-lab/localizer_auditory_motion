@@ -24,9 +24,7 @@ targetDuration = expParameters.targetDuration;
 
 soundData = expParameters.soundData;
 
-
-
-if isTarget == 0
+% if isTarget == 0
 
   if direction == -1
     sound = soundData.S;
@@ -40,21 +38,21 @@ if isTarget == 0
     sound = soundData.L;
   end
 
-elseif isTarget == 1
-
-  if direction == -1
-    sound = soundData.S_T;
-  elseif direction == 90
-    sound = soundData.U_T;
-  elseif direction == 270
-    sound = soundData.D_T;
-  elseif direction == 0
-    sound = soundData.R_T;
-  elseif direction == 180
-    sound = soundData.L_T;
-  end
-
-end
+% elseif isTarget == 1
+% 
+%   if direction == -1
+%     sound = soundData.S_T;
+%   elseif direction == 90
+%     sound = soundData.U_T;
+%   elseif direction == 270
+%     sound = soundData.D_T;
+%   elseif direction == 0
+%     sound = soundData.R_T;
+%   elseif direction == 180
+%     sound = soundData.L_T;
+%   end
+% 
+% end
 
 % Start the sound presentation
 PsychPortAudio('FillBuffer',phandle,sound);
