@@ -1,4 +1,4 @@
-function [onset, duration] = doAudMot(cfg, expParameters, thisEvent, phandle)
+function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
 
 % Play the auditopry stimulation of moving in 4 directions or static noise bursts
 %
@@ -20,9 +20,9 @@ sound=[];
 
 direction = thisEvent.direction(1);
 isTarget = thisEvent.target(1);
-targetDuration = expParameters.targetDuration;
+targetDuration = cfg.target.duration;
 
-soundData = expParameters.soundData;
+soundData = cfg.soundData;
 
 % if isTarget == 0
 
@@ -59,14 +59,12 @@ PsychPortAudio('FillBuffer',phandle,sound);
 playTime = PsychPortAudio('Start',phandle);
 onset = playTime;
 
-% Draw the fixation cross
-color = expParameters.fixationCrossColor;
-
-% If this frame shows a target we change the color
+thisFixation.fixation = cfg.fixation;
+thisFixation.screen = cfg.screen;
 if GetSecs < (onset+targetDuration) && isTarget==1
-    color = expParameters.fixationCrossColorTarget;
+    thisFixation.fixation.color = cfg.fixation.colorTarget;
 end
-drawFixationCross(cfg, expParameters, color)
+drawFixation(thisFixation);
 
 % Get the end time
 % [~, ~, ~, stopTime] = PsychPortAudio('Stop',phandle);

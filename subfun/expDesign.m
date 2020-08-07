@@ -1,4 +1,4 @@
-function [expParameters] = expDesign(expParameters, displayFigs)
+function [cfg] = expDesign(cfg, displayFigs)
 % Creates the sequence of blocks and the events in them
 %
 % The conditions are consecutive static and motion blocks (Gives better results than randomised).
@@ -48,12 +48,12 @@ staticDirections = [-1 -1 -1 -1];
 %% Check inputs
 
 % Set variables here for a dummy test of this function
-if nargin < 1 || isempty(expParameters)
-    expParameters.names             = {'static', 'motion'};
-    expParameters.numRepetitions    = 4;
-    expParameters.speedEvent        = 4;
-    expParameters.numEventsPerBlock = 12;
-    expParameters.maxNumFixationTargetPerBlock = 2;
+if nargin < 1 || isempty(cfg)
+    cfg.names             = {'static', 'motion'};
+    cfg.numRepetitions    = 4;
+    cfg.speedEvent        = 4;
+    cfg.numEventsPerBlock = 12;
+    cfg.maxNumFixationTargetPerBlock = 2;
 end
 
 % Set to 1 for a visualtion of the trials design order
@@ -62,11 +62,11 @@ if nargin < 2  || isempty(displayFigs)
 end
 
 % Get the parameters
-names = expParameters.names;
-numRepetitions = expParameters.numRepetitions;
-speedEvent = expParameters.speedEvent;
-numEventsPerBlock = expParameters.numEventsPerBlock;
-maxNumFixTargPerBlock = expParameters.maxNumFixationTargetPerBlock;
+names = cfg.names;
+numRepetitions = cfg.numRepetitions;
+speedEvent = cfg.speedEvent;
+numEventsPerBlock = cfg.numEventsPerBlock;
+maxNumFixTargPerBlock = cfg.target.maxNbPerBlock;
 
 if mod(numEventsPerBlock, length(motionDirections))~=0
     warning('the number of events per block is not a multiple of the number of motion/static diection')
@@ -99,15 +99,15 @@ numTargets(motionIndex) = Shuffle(targetPerCondition);
 
 %% Give the blocks the names with condition
 
-expParameters.designBlockNames      = cell(nrBlocks, 1);
-expParameters.designDirections      = zeros(nrBlocks, numEventsPerBlock);
-expParameters.designSpeeds          = ones(nrBlocks, numEventsPerBlock) * speedEvent;
-expParameters.designFixationTargets = zeros(nrBlocks, numEventsPerBlock);
+cfg.designBlockNames      = cell(nrBlocks, 1);
+cfg.designDirections      = zeros(nrBlocks, numEventsPerBlock);
+cfg.designSpeeds          = ones(nrBlocks, numEventsPerBlock) * speedEvent;
+cfg.designFixationTargets = zeros(nrBlocks, numEventsPerBlock);
 
 for iMotionBlock = 1:numRepetitions
 
-    expParameters.designDirections( motionIndex(iMotionBlock), :) = Shuffle(motionDirections);
-    expParameters.designDirections( staticIndex(iMotionBlock), :) = Shuffle(staticDirections);
+    cfg.designDirections( motionIndex(iMotionBlock), :) = Shuffle(motionDirections);
+    cfg.designDirections( staticIndex(iMotionBlock), :) = Shuffle(staticDirections);
 
 end
 
@@ -120,7 +120,7 @@ for iBlock = 1:nrBlocks
         case 'motion'
             thisBlockName = {'motion'};
     end
-    expParameters.designBlockNames(iBlock) = thisBlockName;
+    cfg.designBlockNames(iBlock) = thisBlockName;
 
 
     % set target
@@ -149,7 +149,7 @@ for iBlock = 1:nrBlocks
 
     end
 
-    expParameters.designFixationTargets(iBlock, chosenTarget) = 1;
+    cfg.designFixationTargets(iBlock, chosenTarget) = 1;
 
 end
 
@@ -157,12 +157,12 @@ end
 %% Visualize the design matrix
 if displayFigs
 
-    uniqueNames = unique(expParameters.designBlockNames) ;
+    uniqueNames = unique(cfg.designBlockNames) ;
 
-    Ind = zeros(length(expParameters.designBlockNames), length(uniqueNames)) ;
+    Ind = zeros(length(cfg.designBlockNames), length(uniqueNames)) ;
 
     for i = 1:length(uniqueNames)
-        CondInd(:,i) = find(strcmp(expParameters.designBlockNames, uniqueNames{i})) ; %#ok<*AGROW>
+        CondInd(:,i) = find(strcmp(cfg.designBlockNames, uniqueNames{i})) ; %#ok<*AGROW>
         Ind(CondInd(:,i), i) = 1 ;
     end
 

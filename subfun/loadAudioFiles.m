@@ -1,14 +1,14 @@
-function [expParameters] = loadAudioFiles(cfg, expParameters)
+function [cfg] = loadAudioFiles(cfg)
 
 %% Get parameters
 
 % Set the subj name to retrieve its own sounds
-if cfg.debug
+if cfg.debug.do
   subjName = 'sub-ctrl666';
 else
   zeroPadding = 3;
   pattern = ['%0' num2str(zeroPadding) '.0f'];
-  subjName = ['sub-' expParameters.subjectGrp, sprintf(pattern, expParameters.subjectNb)];
+  subjName = ['sub-' cfg.subject.subjectGrp, sprintf(pattern, cfg.subject.subjectNb)];
 end
 
 %% Load the sounds
@@ -69,5 +69,6 @@ else
     freq = unique([freq1 freq2 freq3 freq4 freq5 freq6 freq7 freq8 freq9 freq10]);
 end
 
-expParameters.soundData = soundData;
-expParameters.freq = freq;
+cfg.soundData = soundData;
+cfg.audio.fs = freq;
+
