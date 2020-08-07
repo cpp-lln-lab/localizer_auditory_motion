@@ -5,207 +5,147 @@
 % adapted by M.Rezk to localize MT/MST (Huk,2002)
 % re-adapted by MarcoB and RemiG 2020
 
-%%
-
 % Clear all the previous stuff
 % clc; clear;
 if ~ismac
-  close all;
-  clear Screen;
+    close all;
+    clear Screen;
 end
 
+getOnlyPress = 1;
+
+more off;
+
 % make sure we got access to all the required functions and inputs
-addpath(genpath(fullfile(pwd, 'subfun')))
+initEnv();
 
-[expParameters, cfg] = setParameters;
-
-% set and load all the parameters to run the experiment
-expParameters = userInputs(cfg, expParameters);
-
-expParameters = createFilename(cfg, expParameters);
-
-expParameters %#ok<NOPTS>
+cfg = setParameters;
+cfg = userInputs(cfg);
+cfg = createFilename(cfg);
 
 %%  Experiment
 
 % Safety loop: close the screen if code crashes
 try
-    
+
+    % % % REFACTOR THIS FUNCTION
+    [cfg] = loadAudioFiles(cfg);
+
     %% Init the experiment
     [cfg] = initPTB(cfg);
-    
+
     % % Convert some values from degrees to pixels
     % cfg = deg2Pix('diameterAperture', cfg, cfg);
     % expParameters = deg2Pix('dotSize', expParameters, cfg);
-    
-    
-    [el] = eyeTracker('Calibration', cfg, expParameters);
-    
+
+    [el] = eyeTracker('Calibration', cfg);
+
     % % % REFACTOR THIS FUNCTION
-    [expParameters] = expDesign(expParameters);
-    % % %
-    
+    [cfg] = expDesign(cfg);
+
     % Prepare for the output logfiles with all
-    logFile = saveEventsFile('open', expParameters, [], ...
+    logFile = saveEventsFile('open', cfg, [], ...
         'direction', 'speed', 'target', 'event', 'block');
-    
-    logFile
-    
-    % % % REFACTOR THIS FUNCTION
-    [expParameters] = loadAudioFiles(cfg, expParameters);
-    phandle = PsychPortAudio('Open',[],[],1,expParameters.freq,2);
-    % % %
-    
-    % Prepare for fixation Cross
-    if expParameters.Task1
-        
-        cfg.xCoords = [-expParameters.fixCrossDimPix expParameters.fixCrossDimPix 0 0] ...
-            + expParameters.xDisplacementFixCross;
-        
-        cfg.yCoords = [0 0 -expParameters.fixCrossDimPix expParameters.fixCrossDimPix] ...
-            + expParameters.yDisplacementFixCross;
-        
-        cfg.allCoords = [cfg.xCoords; cfg.yCoords];
-        
-    end
-    
-    % Wait for space key to be pressed
-    pressSpace4me
-    
+
+    %     disp(cfg);
+
+    standByScreen(cfg);
+
     % prepare the KbQueue to collect responses
-    getResponse('init', cfg, expParameters, 1);
-    getResponse('start', cfg, expParameters, 1);
-    
-    % Show instructions
-    if expParameters.Task1
-        DrawFormattedText(cfg.win,expParameters.TaskInstruction,...
-            'center', 'center', cfg.textColor);
-        Screen('Flip', cfg.win);
-    end
-    
+    getResponse('init', cfg.keyboard.responseBox, cfg);
+
     % Wait for Trigger from Scanner
-    wait4Trigger(cfg)
-    
-    % Show the fixation cross
-    if expParameters.Task1
-        drawFixationCross(cfg, expParameters, expParameters.fixationCrossColor)
-        Screen('Flip',cfg.win);
-    end
-    
+    waitForTrigger(cfg);
+
     %% Experiment Start
-    cfg.experimentStart = GetSecs;
-    
-    WaitSecs(expParameters.onsetDelay);
-    
+    cfg = getExperimentStart(cfg);
+
+    getResponse('start', cfg.keyboard.responseBox);
+
+    WaitSecs(cfg.onsetDelay);
+
     %% For Each Block
-    
-    stopEverything = 0;
-    
-    for iBlock = 1:expParameters.numBlocks
-        
-        if stopEverything
-            break;
-        end
-        
-        fprintf('\n - Running Block %.0f \n',iBlock)
-        
-        eyeTracker('StartRecording', cfg, expParameters);
-        
+
+    for iBlock = 1:cfg.numBlocks
+
+        fprintf('\n - Running Block %.0f \n', iBlock);
+
+        eyeTracker('StartRecording', cfg);
+
         % For each event in the block
-        for iEvent = 1:expParameters.numEventsPerBlock
-            
-            
+        for iEvent = 1:cfg.numEventsPerBlock
+
             % Check for experiment abortion from operator
-            [keyIsDown, ~, keyCode] = KbCheck(cfg.keyboard);
-            if keyIsDown && keyCode(KbName(cfg.escapeKey))
-                stopEverything = 1;
-                warning('OK let us get out of here')
-                break;
-            end
-            
-            
+            checkAbort(cfg, cfg.keyboard.keyboard);
+
             % set direction, speed of that event and if it is a target
             thisEvent.trial_type = 'dummy';
-            thisEvent.direction = expParameters.designDirections(iBlock,iEvent);
-            thisEvent.speed = expParameters.designSpeeds(iBlock,iEvent);
-            thisEvent.target = expParameters.designFixationTargets(iBlock,iEvent);
-            
+            thisEvent.direction = cfg.designDirections(iBlock, iEvent);
+            thisEvent.speed = cfg.designSpeeds(iBlock, iEvent);
+            thisEvent.target = cfg.designFixationTargets(iBlock, iEvent);
+
             % play the sounds and collect onset and duration of the event
-            [onset, duration] = doAudMot(cfg, expParameters, thisEvent, phandle);
-            
+            [onset, duration] = doAudMot(cfg, thisEvent, cfg.audio.pahandle);
+
             thisEvent.event = iEvent;
             thisEvent.block = iBlock;
             thisEvent.duration = duration;
             thisEvent.onset = onset - cfg.experimentStart;
-            
+
             % Save the events txt logfile
             % we save event by event so we clear this variable every loop
             thisEvent.fileID = logFile.fileID;
-            
-            saveEventsFile('save', expParameters, thisEvent, ...
+
+            saveEventsFile('save', cfg, thisEvent, ...
                 'direction', 'speed', 'target', 'event', 'block');
-            
-            clear thisEvent
-            
-            
+
+            clear thisEvent;
+
             % collect the responses and appends to the event structure for
             % saving in the tsv file
-            responseEvents = getResponse('check', cfg, expParameters);
-            
-            if ~isempty(responseEvents(1).onset)
-                
-                responseEvents.fileID = logFile.fileID;
-                
-                for iResp = 1:size(responseEvents, 1)
-                    responseEvents(iResp).onset = ...
-                        responseEvents(iResp).onset - cfg.experimentStart;
-                    responseEvents(iResp).target = expParameters.designFixationTargets(iBlock,iEvent);
-                    responseEvents(iResp).event = iEvent;
-                    responseEvents(iResp).block = iBlock;
-                end
-                
-                saveEventsFile('save', expParameters, responseEvents, ...
-                    'direction', 'speed', 'target', 'event', 'block');
-            end
-            
+            responseEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
+                getOnlyPress);
+
+            triggerString = ['trigger'];
+            saveResponsesAndTriggers(responseEvents, cfg, logFile, triggerString);
+
             % wait for the inter-stimulus interval
-            WaitSecs(expParameters.ISI);
-            
-            getResponse('flush', cfg, expParameters);
-            
+            WaitSecs(cfg.ISI);
+
         end
-        
-        eyeTracker('StopRecordings', cfg, expParameters);
-        
-        WaitSecs(expParameters.IBI);
-        
+
+        eyeTracker('StopRecordings', cfg);
+
+        WaitSecs(cfg.IBI);
+
     end
-    
+
     % End of the run for the BOLD to go down
-    WaitSecs(expParameters.endDelay);
-    
+    WaitSecs(cfg.endDelay);
+
     % Close the logfiles
-    saveEventsFile('close', expParameters, logFile);
-    
-    getResponse('stop', cfg, expParameters, 1);
-    
-    totalExperimentTime = GetSecs-cfg.experimentStart;
-    
-    eyeTracker('Shutdown', cfg, expParameters);
-    
+    saveEventsFile('close', cfg, logFile);
+
+    getResponse('stop', cfg.keyboard.responseBox);
+    getResponse('release', cfg.keyboard.responseBox);
+
+    totalExperimentTime = GetSecs - cfg.experimentStart;
+
+    eyeTracker('Shutdown', cfg);
+
     % save the whole workspace
-    matFile = fullfile(expParameters.outputDir, strrep(expParameters.fileName.events,'tsv', 'mat'));
+    matFile = fullfile(cfg.dir.output, strrep(cfg.fileName.events, 'tsv', 'mat'));
     if IsOctave
         save(matFile, '-mat7-binary');
     else
         save(matFile, '-v7.3');
     end
-    
-    cleanUp()
-    
+
+    cleanUp();
+
 catch
-    
-    cleanUp()
+
+    cleanUp();
     psychrethrow(psychlasterror);
-    
+
 end
