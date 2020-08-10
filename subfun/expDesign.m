@@ -25,13 +25,13 @@ function [cfg] = expDesign(cfg, displayFigs)
     %   - ExpParameters.designBlockNames      = cell array (nr_blocks, 1) with the
     %    name for each block
     %
-    %   - ExpParameters.designDirections      = array (nr_blocks, numEventsPerBlock)
+    %   - ExpParameters.designDirections      = array (nr_blocks, nbEventsPerBlock)
     %    with the direction to present in a given block
     %       - 0 90 180 270 indicate the angle
     %       - -1 indicates static
     %
     %
-    %   - ExpParameters.designFixationTargets = array (nr_blocks, numEventsPerBlock)
+    %   - ExpParameters.designFixationTargets = array (nr_blocks, nbEventsPerBlock)
     %   showing for each event if it should be accompanied by a target
     %
 
@@ -49,7 +49,7 @@ function [cfg] = expDesign(cfg, displayFigs)
     % Set variables here for a dummy test of this function
     if nargin < 1 || isempty(cfg)
         cfg.design.names             = {'static', 'motion'};
-        cfg.design.numRepetitions    = 4;
+        cfg.design.nbRepetitions    = 4;
         cfg.design.nbEventsPerBlock = 12;
         cfg.target.maxNbPerBlock = 2;
     end
@@ -61,43 +61,43 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     % Get the parameters
     names = cfg.design.names;
-    numRepetitions = cfg.design.nbRepetitions;
-    numEventsPerBlock = cfg.design.nbEventsPerBlock;
-    maxNumFixTargPerBlock = cfg.target.maxNbPerBlock;
+    nbRepetitions = cfg.design.nbRepetitions;
+    nbEventsPerBlock = cfg.design.nbEventsPerBlock;
+    maxNbFixTargPerBlock = cfg.target.maxNbPerBlock;
 
-    if mod(numEventsPerBlock, length(motionDirections)) ~= 0
+    if mod(nbEventsPerBlock, length(motionDirections)) ~= 0
         warning('the n. of events per block is not a multiple of experimental conditions');
     end
 
     %% Adapt some variables according to input
 
     % Set directions for static and motion condition
-    motionDirections = repmat(motionDirections, 1, numEventsPerBlock / length(motionDirections));
-    staticDirections = repmat(staticDirections, 1, numEventsPerBlock / length(staticDirections));
+    motionDirections = repmat(motionDirections, 1, nbEventsPerBlock / length(motionDirections));
+    staticDirections = repmat(staticDirections, 1, nbEventsPerBlock / length(staticDirections));
 
     % Assign the conditions
-    condition = repmat(names, 1, numRepetitions);
+    condition = repmat(names, 1, nbRepetitions);
     nrBlocks = length(condition);
     % Get the index of each condition
     staticIndex = find(strcmp(condition, 'static'));
     motionIndex = find(strcmp(condition, 'motion'));
 
     % Assign the targets for each condition
-    rangeTargets = [1 maxNumFixTargPerBlock];
+    rangeTargets = [1 maxnbFixTargPerBlock];
     % Get random number of targets for one condition
-    targetPerCondition = randi(rangeTargets, 1, numRepetitions);
+    targetPerCondition = randi(rangeTargets, 1, nbRepetitions);
     % Assign the number of targets for each condition after shuffling
-    numTargets = zeros(1, nrBlocks);
-    numTargets(staticIndex) = Shuffle(targetPerCondition);
-    numTargets(motionIndex) = Shuffle(targetPerCondition);
+    nbTargets = zeros(1, nrBlocks);
+    nbTargets(staticIndex) = Shuffle(targetPerCondition);
+    nbTargets(motionIndex) = Shuffle(targetPerCondition);
 
     %% Give the blocks the names with condition
 
     cfg.designBlockNames      = cell(nrBlocks, 1);
-    cfg.designDirections      = zeros(nrBlocks, numEventsPerBlock);
-    cfg.designFixationTargets = zeros(nrBlocks, numEventsPerBlock);
+    cfg.designDirections      = zeros(nrBlocks, nbEventsPerBlock);
+    cfg.designFixationTargets = zeros(nrBlocks, nbEventsPerBlock);
 
-    for iMotionBlock = 1:numRepetitions
+    for iMotionBlock = 1:nbRepetitions
 
         cfg.designDirections(motionIndex(iMotionBlock), :) = Shuffle(motionDirections);
         cfg.designDirections(staticIndex(iMotionBlock), :) = Shuffle(staticDirections);
@@ -122,20 +122,20 @@ function [cfg] = expDesign(cfg, displayFigs)
 
         chosenTarget = [];
 
-        tmpTarget = numTargets(iBlock);
+        tmpTarget = nbTargets(iBlock);
 
         switch tmpTarget
 
             case 1
 
-                chosenTarget = randsample(2:numEventsPerBlock - 1, tmpTarget, false);
+                chosenTarget = randsample(2:nbEventsPerBlock - 1, tmpTarget, false);
 
             case 2
 
                 targetDifference = 0;
 
                 while targetDifference <= 2
-                    chosenTarget = randsample(2:numEventsPerBlock - 1, tmpTarget, false);
+                    chosenTarget = randsample(2:nbEventsPerBlock - 1, tmpTarget, false);
                     targetDifference = (max(chosenTarget) - min(chosenTarget));
                 end
 
