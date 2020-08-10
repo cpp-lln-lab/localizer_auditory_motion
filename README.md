@@ -37,12 +37,13 @@ Any details of the experiment can be changed in `setParameters.m` (e.g., experim
 `setParameters.m` is the core engine of the experiment. It contains the following tweakable sections:
 
 - Debug mode setting
-- MRI settings
 - Engine parameters:
+  - Devices parameters
   - Monitor parameters
-  - Monitor parameters for PsychToolBox
-- Keyboards
+  - Keyboard parameters
+  - MRI parameters
 - Experiment Design
+- Timing
 - Auditory Stimulation
 - Task(s)
   - Instructions
