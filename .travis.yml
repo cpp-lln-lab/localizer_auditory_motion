@@ -6,7 +6,7 @@ cache:
   apt: true # only works with Pro version
 
 before_install:
-  - cd .. && git clone https://github.com/florianschanda/miss_hit.git && export PATH=$PATH:`pwd`/miss_hit && cd CPP_localizer_auditory_motion
+  - cd .. && git clone https://github.com/florianschanda/miss_hit.git && export PATH=$PATH:`pwd`/miss_hit && cd localizer_auditory_motion
 
 jobs:
   include:
