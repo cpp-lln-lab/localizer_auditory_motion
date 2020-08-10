@@ -66,7 +66,7 @@ function [cfg] = expDesign(cfg, displayFigs)
     maxNumFixTargPerBlock = cfg.target.maxNbPerBlock;
 
     if mod(numEventsPerBlock, length(motionDirections)) ~= 0
-        warning('the n. of events per block is not a multiple of the n. of experimental conditions');
+        warning('the n. of events per block is not a multiple of experimental conditions');
     end
 
     %% Adapt some variables according to input
