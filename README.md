@@ -8,35 +8,27 @@ For instructions see the following links:
 
 | Requirements                                             | Used version |
 |----------------------------------------------------------|--------------|
-| [CPP_BIDS](https://github.com/cpp-lln-lab/CPP_BIDS)      | ?            |
-| [CPP_PTB](https://github.com/cpp-lln-lab/CPP_PTB)        | ?            |
 | [PsychToolBox](http://psychtoolbox.org/)                 | >=3.0.14     |
-| [Matlab](https://www.mathworks.com/products/matlab.html) | >=2017      |
+| [Matlab](https://www.mathworks.com/products/matlab.html) | >=2017b      |
 | or [octave](https://www.gnu.org/software/octave/)        | >=4.?        |
 
-## Installing dependencies
+## Installation
 
-All the dependencies needed to run this are listed in the [mpm-requirements.txt file](.mpm-requirements.txt). If those functions are not in the matlab path the scripts in this repository will not work.
+The CPP_BIDS and CPP_PTB dependencies are already set up as submodule to this repository.
+You can install it all with git by doing.
 
-If you are using the [matlab package manager](https://github.com/mobeets/mpm), you can simply download the appropriate version of those dependencies and add them to your path by running the `getDependencies` function.
-
-```matlab
-getDependencies('update')
+```bash
+git clone --recurse-submodules https://github.com/cpp-lln-lab/localizer_auditory_motion.git
 ```
 
-If you already have the appropriate version but just want to add them to the matlab path, then run.
-
-```matlab
-getDependencies()
-```
 ## Structure and function details
 
 
-### visualLocTranslational
+### audioLocTranslational
 
-Running this script will play blocks of motion static sounds. Motion blocks will play sounds moving in one of four directions (up-, down-, left-, and right-ward)
+Running this script will play blocks of motion/static sounds. Motion blocks will play sounds moving in one of four directions (up-, down-, left-, and right-ward)
 
-By default it is run in `Debug mode` meaning that it does not run care about subjID, run n., fMRI triggers, Eye Tracker, etc..
+By default it is run in `Debug mode` meaning that it does not care about subjID, run n., fMRI triggers, Eye Tracker, etc..
 
 Any details of the experiment can be changed in `setParameters.m` (e.g., experiment mode, motion stimuli details, exp. design, etc.)
 
