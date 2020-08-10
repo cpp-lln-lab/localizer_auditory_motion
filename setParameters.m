@@ -36,8 +36,8 @@ function cfg = setParameters
 
     cfg.design.names              = {'static', 'motion'};
     cfg.design.possibleDirections = [-1 1]; % 1 motion , -1 static %NOT IN USE AT THE MOMENT
-    cfg.design.numBlocks          = size(cfg.design.names , 2); % TO CHECK
-    cfg.design.nbRepetitions     = 1;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
+    cfg.design.numBlocks          = size(cfg.design.names, 2); % TO CHECK
+    cfg.design.nbRepetitions      = 1;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
     cfg.design.nbEventsPerBlock   = 12;
 
     %% Timing
