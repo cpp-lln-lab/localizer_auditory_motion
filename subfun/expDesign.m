@@ -60,7 +60,7 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     % Get the parameters
     names = cfg.design.names;
-    numRepetitions = cfg.design.numRepetitions;
+    numRepetitions = cfg.design.nbRepetitions;
     numEventsPerBlock = cfg.design.nbEventsPerBlock;
     maxNumFixTargPerBlock = cfg.target.maxNbPerBlock;
 
