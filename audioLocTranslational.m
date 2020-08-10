@@ -62,7 +62,7 @@ try
 
     getResponse('start', cfg.keyboard.responseBox);
 
-    WaitSecs(cfg.onsetDelay);
+    WaitSecs(cfg.timing.onsetDelay);
 
     %% For Each Block
 
@@ -110,18 +110,18 @@ try
             saveResponsesAndTriggers(responseEvents, cfg, logFile, triggerString);
 
             % wait for the inter-stimulus interval
-            WaitSecs(cfg.ISI);
+            WaitSecs(cfg.timing.ISI);
 
         end
 
         eyeTracker('StopRecordings', cfg);
 
-        WaitSecs(cfg.IBI);
+        WaitSecs(cfg.timing.IBI);
 
     end
 
     % End of the run for the BOLD to go down
-    WaitSecs(cfg.endDelay);
+    WaitSecs(cfg.timing.endDelay);
 
     % Close the logfiles
     saveEventsFile('close', cfg, logFile);
