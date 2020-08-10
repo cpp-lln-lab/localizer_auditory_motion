@@ -29,7 +29,6 @@ function [cfg] = expDesign(cfg, displayFigs)
     %       - 0 90 180 270 indicate the angle
     %       - -1 indicates static
     %
-    %   - ExpParameters.designSpeeds          = array (nr_blocks, numEventsPerBlock) * speedEvent
     %
     %   - ExpParameters.designFixationTargets = array (nr_blocks, numEventsPerBlock)
     %   showing for each event if it should be accompanied by a target
@@ -48,11 +47,10 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     % Set variables here for a dummy test of this function
     if nargin < 1 || isempty(cfg)
-        cfg.names             = {'static', 'motion'};
-        cfg.numRepetitions    = 4;
-        cfg.speedEvent        = 4;
-        cfg.numEventsPerBlock = 12;
-        cfg.maxNumFixationTargetPerBlock = 2;
+        cfg.design.names             = {'static', 'motion'};
+        cfg.design.numRepetitions    = 4;
+        cfg.design.nbEventsPerBlock = 12;
+        cfg.target.maxNbPerBlock = 2;
     end
 
     % Set to 1 for a visualtion of the trials design order
@@ -61,10 +59,9 @@ function [cfg] = expDesign(cfg, displayFigs)
     end
 
     % Get the parameters
-    names = cfg.names;
-    numRepetitions = cfg.numRepetitions;
-    speedEvent = cfg.speedEvent;
-    numEventsPerBlock = cfg.numEventsPerBlock;
+    names = cfg.design.names;
+    numRepetitions = cfg.design.numRepetitions;
+    numEventsPerBlock = cfg.design.nbEventsPerBlock;
     maxNumFixTargPerBlock = cfg.target.maxNbPerBlock;
 
     if mod(numEventsPerBlock, length(motionDirections)) ~= 0
@@ -97,7 +94,6 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     cfg.designBlockNames      = cell(nrBlocks, 1);
     cfg.designDirections      = zeros(nrBlocks, numEventsPerBlock);
-    cfg.designSpeeds          = ones(nrBlocks, numEventsPerBlock) * speedEvent;
     cfg.designFixationTargets = zeros(nrBlocks, numEventsPerBlock);
 
     for iMotionBlock = 1:numRepetitions
