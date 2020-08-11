@@ -1,9 +1,14 @@
 %% Auditory hMT localizer using translational motion in four directions
 %  (up- down- left and right-ward)
 
-% Original Script Written by Sam Weiller to localize MT+/V5
-% adapted by M.Rezk to localize MT/MST (Huk,2002)
-% re-adapted by MarcoB and RemiG 2020
+% by Mohamed Rezk 2018
+% adapted by MarcoB and RemiG 2020
+
+%%
+
+getOnlyPress = 1;
+
+more off;
 
 % Clear all the previous stuff
 % clc; clear;
@@ -12,13 +17,10 @@ if ~ismac
     clear Screen;
 end
 
-getOnlyPress = 1;
-
-more off;
-
 % make sure we got access to all the required functions and inputs
 initEnv();
 
+% set and load all the parameters to run the experiment
 cfg = setParameters;
 cfg = userInputs(cfg);
 cfg = createFilename(cfg);
@@ -28,27 +30,30 @@ cfg = createFilename(cfg);
 % Safety loop: close the screen if code crashes
 try
 
-    % % % REFACTOR THIS FUNCTION
-    [cfg] = loadAudioFiles(cfg);
-
     %% Init the experiment
     [cfg] = initPTB(cfg);
 
-    % % Convert some values from degrees to pixels
-    % cfg = deg2Pix('diameterAperture', cfg, cfg);
-    % expParameters = deg2Pix('dotSize', expParameters, cfg);
+    % % % REFACTOR THIS FUNCTION % % %
+
+    [cfg] = loadAudioFiles(cfg);
+
+    % % % REFACTOR THIS FUNCTION % % %
 
     [el] = eyeTracker('Calibration', cfg);
 
-    % % % REFACTOR THIS FUNCTION
+    % % % REFACTOR THIS FUNCTION % % %
+
     [cfg] = expDesign(cfg);
 
+    % % % REFACTOR THIS FUNCTION % % %
+
     % Prepare for the output logfiles with all
-    logFile = saveEventsFile('open', cfg, [], ...
-        'direction', 'speed', 'target', 'event', 'block');
+    logFile.extraColumns = cfg.extraColumns;
+    logFile = saveEventsFile('open', cfg, logFile);
 
-    %     disp(cfg);
+    disp(cfg);
 
+    % Show experiment instruction
     standByScreen(cfg);
 
     % prepare the KbQueue to collect responses
@@ -79,25 +84,30 @@ try
             checkAbort(cfg, cfg.keyboard.keyboard);
 
             % set direction, speed of that event and if it is a target
-            thisEvent.trial_type = 'dummy';
-            thisEvent.direction = cfg.designDirections(iBlock, iEvent);
-            thisEvent.speed = cfg.designSpeeds(iBlock, iEvent);
-            thisEvent.target = cfg.designFixationTargets(iBlock, iEvent);
+            thisEvent.trial_type = cfg.design.blockNames{iBlock};
+            thisEvent.direction = cfg.design.directions(iBlock, iEvent);
+            % thisEvent.speed = cfg.design.speeds(iBlock, iEvent);
+            thisEvent.target = cfg.design.fixationTargets(iBlock, iEvent);
+
+            % % % REFACTOR THIS FUNCTION % % %
 
             % play the sounds and collect onset and duration of the event
-            [onset, duration] = doAudMot(cfg, thisEvent, cfg.audio.pahandle);
+            [onset, duration] = doAudMot(cfg, thisEvent);
+
+            % % % REFACTOR THIS FUNCTION % % %
 
             thisEvent.event = iEvent;
             thisEvent.block = iBlock;
+            thisEvent.keyName = 'n/a';
             thisEvent.duration = duration;
             thisEvent.onset = onset - cfg.experimentStart;
 
             % Save the events txt logfile
             % we save event by event so we clear this variable every loop
             thisEvent.fileID = logFile.fileID;
+            thisEvent.extraColumns = logFile.extraColumns;
 
-            saveEventsFile('save', cfg, thisEvent, ...
-                'direction', 'speed', 'target', 'event', 'block');
+            saveEventsFile('save', cfg, thisEvent);
 
             clear thisEvent;
 
@@ -106,7 +116,7 @@ try
             responseEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
                 getOnlyPress);
 
-            triggerString = ['trigger'];
+            triggerString = ['trigger_' cfg.design.blockNames{iBlock}];
             saveResponsesAndTriggers(responseEvents, cfg, logFile, triggerString);
 
             % wait for the inter-stimulus interval
@@ -118,10 +128,19 @@ try
 
         WaitSecs(cfg.timing.IBI);
 
+        % trigger monitoring
+        triggerEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
+            getOnlyPress);
+
+        triggerString = 'trigger_baseline';
+        saveResponsesAndTriggers(triggerEvents, cfg, logFile, triggerString);
+
     end
 
     % End of the run for the BOLD to go down
     WaitSecs(cfg.timing.endDelay);
+
+    cfg = getExperimentEnd(cfg);
 
     % Close the logfiles
     saveEventsFile('close', cfg, logFile);
@@ -129,17 +148,11 @@ try
     getResponse('stop', cfg.keyboard.responseBox);
     getResponse('release', cfg.keyboard.responseBox);
 
-    totalExperimentTime = GetSecs - cfg.experimentStart;
-
     eyeTracker('Shutdown', cfg);
 
-    % save the whole workspace
-    matFile = fullfile(cfg.dir.output, strrep(cfg.fileName.events, 'tsv', 'mat'));
-    if IsOctave
-        save(matFile, '-mat7-binary');
-    else
-        save(matFile, '-v7.3');
-    end
+    createBoldJson(cfg, cfg);
+
+    farewellScreen(cfg);
 
     cleanUp();
 

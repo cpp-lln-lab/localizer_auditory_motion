@@ -22,16 +22,16 @@ function [cfg] = expDesign(cfg, displayFigs)
     %   matrix of the design
     %
     % Output:
-    %   - ExpParameters.designBlockNames      = cell array (nr_blocks, 1) with the
+    %   - ExpParameters.design.blockNames      = cell array (nr_blocks, 1) with the
     %    name for each block
     %
-    %   - ExpParameters.designDirections      = array (nr_blocks, nbEventsPerBlock)
+    %   - ExpParameters.design.directions      = array (nr_blocks, nbEventsPerBlock)
     %    with the direction to present in a given block
     %       - 0 90 180 270 indicate the angle
     %       - -1 indicates static
     %
     %
-    %   - ExpParameters.designFixationTargets = array (nr_blocks, nbEventsPerBlock)
+    %   - ExpParameters.design.fixationTargets = array (nr_blocks, nbEventsPerBlock)
     %   showing for each event if it should be accompanied by a target
     %
 
@@ -48,8 +48,8 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     % Set variables here for a dummy test of this function
     if nargin < 1 || isempty(cfg)
-        cfg.design.names             = {'static', 'motion'};
-        cfg.design.nbRepetitions    = 4;
+        cfg.design.names = {'static', 'motion'};
+        cfg.design.nbRepetitions = 4;
         cfg.design.nbEventsPerBlock = 12;
         cfg.target.maxNbPerBlock = 2;
     end
@@ -93,14 +93,14 @@ function [cfg] = expDesign(cfg, displayFigs)
 
     %% Give the blocks the names with condition
 
-    cfg.designBlockNames      = cell(nrBlocks, 1);
-    cfg.designDirections      = zeros(nrBlocks, nbEventsPerBlock);
-    cfg.designFixationTargets = zeros(nrBlocks, nbEventsPerBlock);
+    cfg.design.blockNames      = cell(nrBlocks, 1);
+    cfg.design.directions      = zeros(nrBlocks, nbEventsPerBlock);
+    cfg.design.fixationTargets = zeros(nrBlocks, nbEventsPerBlock);
 
     for iMotionBlock = 1:nbRepetitions
 
-        cfg.designDirections(motionIndex(iMotionBlock), :) = Shuffle(motionDirections);
-        cfg.designDirections(staticIndex(iMotionBlock), :) = Shuffle(staticDirections);
+        cfg.design.directions(motionIndex(iMotionBlock), :) = Shuffle(motionDirections);
+        cfg.design.directions(staticIndex(iMotionBlock), :) = Shuffle(staticDirections);
 
     end
 
@@ -113,7 +113,7 @@ function [cfg] = expDesign(cfg, displayFigs)
             case 'motion'
                 thisBlockName = {'motion'};
         end
-        cfg.designBlockNames(iBlock) = thisBlockName;
+        cfg.design.blockNames(iBlock) = thisBlockName;
 
         % set target
         % if there are 2 targets per block we make sure that they are at least
@@ -141,19 +141,19 @@ function [cfg] = expDesign(cfg, displayFigs)
 
         end
 
-        cfg.designFixationTargets(iBlock, chosenTarget) = 1;
+        cfg.design.fixationTargets(iBlock, chosenTarget) = 1;
 
     end
 
     %% Visualize the design matrix
     if displayFigs
 
-        uniqueNames = unique(cfg.designBlockNames) ;
+        uniqueNames = unique(cfg.design.blockNames) ;
 
-        Ind = zeros(length(cfg.designBlockNames), length(uniqueNames)) ;
+        Ind = zeros(length(cfg.design.blockNames), length(uniqueNames)) ;
 
         for i = 1:length(uniqueNames)
-            CondInd(:, i) = find(strcmp(cfg.designBlockNames, uniqueNames{i})) ; %#ok<*AGROW>
+            CondInd(:, i) = find(strcmp(cfg.design.blockNames, uniqueNames{i})) ; %#ok<*AGROW>
             Ind(CondInd(:, i), i) = 1 ;
         end
 
