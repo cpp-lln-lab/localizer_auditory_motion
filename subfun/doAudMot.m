@@ -1,5 +1,5 @@
-function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
-
+function [onset, duration] = doAudMot(cfg, thisEvent)
+    
     % Play the auditopry stimulation of moving in 4 directions or static noise bursts
     %
     % DIRECTIONS
@@ -13,19 +13,19 @@ function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
     % Output:
     %     -
     %
-
+    
     %% Get parameters
-
+    
     sound = [];
-
+    
     direction = thisEvent.direction(1);
     isTarget = thisEvent.target(1);
     targetDuration = cfg.target.duration;
-
+    
     soundData = cfg.soundData;
-
+    
     % if isTarget == 0
-
+    
     if direction == -1
         sound = soundData.S;
     elseif direction == 90
@@ -37,7 +37,7 @@ function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
     elseif direction == 180
         sound = soundData.L;
     end
-
+    
     % elseif isTarget == 1
     %
     %   if direction == -1
@@ -53,21 +53,44 @@ function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
     %   end
     %
     % end
-
+    
     % Start the sound presentation
-    PsychPortAudio('FillBuffer', phandle, sound);
-    playTime = PsychPortAudio('Start', phandle);
-    onset = playTime;
-
+    PsychPortAudio('FillBuffer', cfg.audio.pahandle, sound);
+    PsychPortAudio('Start', cfg.audio.pahandle);
+    onset = GetSecs;
+    
+    % draw first fixation and get a first visual time stamp
+    % ideally we would want to synch that first time stamp and the sound start
     thisFixation.fixation = cfg.fixation;
     thisFixation.screen = cfg.screen;
-    if GetSecs < (onset + targetDuration) && isTarget == 1
+    if isTarget == 1
         thisFixation.fixation.color = cfg.fixation.colorTarget;
     end
     drawFixation(thisFixation);
-
+    vbl = Screen('Flip', cfg.screen.win);
+    
+    while 1
+        
+        % set default cross cross color but update if target time is not
+        % finished
+        thisFixation.fixation.color = cfg.fixation.color;
+        if GetSecs < (onset + targetDuration) && isTarget == 1
+            thisFixation.fixation.color = cfg.fixation.colorTarget;
+        end
+        
+        drawFixation(thisFixation);
+        vbl = Screen('Flip', cfg.screen.win, vbl + cfg.screen.ifi);
+        
+        status = PsychPortAudio('GetStatus', cfg.audio.pahandle);
+        if ~status.Active
+            break;
+        end
+        
+    end
+    
     % Get the end time
-    % [~, ~, ~, stopTime] = PsychPortAudio('Stop',phandle);
-
-    % duration =  stopTime - onset;
-    duration = onset + 1.2;
+    waitForEndOfPlayback = 1; % hard coding that will need to be moved out
+    [onset, ~, ~, estStopTime] = PsychPortAudio('Stop', cfg.audio.pahandle, ...
+        waitForEndOfPlayback);
+    
+    duration = estStopTime - onset;
