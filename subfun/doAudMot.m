@@ -54,37 +54,42 @@ function [onset, duration] = doAudMot(cfg, thisEvent)
     %
     % end
     
-    thisFixation.fixation = cfg.fixation;
-    thisFixation.screen = cfg.screen;
-    drawFixation(thisFixation);
-    vbl = Screen('Flip', cfg.screen.win);
-    
     % Start the sound presentation
     PsychPortAudio('FillBuffer', cfg.audio.pahandle, sound);
     PsychPortAudio('Start', cfg.audio.pahandle);
     onset = GetSecs;
     
-    status = PsychPortAudio('GetStatus', cfg.audio.pahandle);
+    % draw first fixation and get a first visual time stamp
+    % ideally we would want to synch that first time stamp and the sound start
+    thisFixation.fixation = cfg.fixation;
+    thisFixation.screen = cfg.screen;
+    if isTarget == 1
+        thisFixation.fixation.color = cfg.fixation.colorTarget;
+    end
+    drawFixation(thisFixation);
+    vbl = Screen('Flip', cfg.screen.win);
     
-    while status.Active
+    while 1
         
+        % set default cross cross color but update if target time is not
+        % finished
         thisFixation.fixation.color = cfg.fixation.color;
-        
         if GetSecs < (onset + targetDuration) && isTarget == 1
-            thisFixation.fixation.color = cfg.fixation.colorTarget
+            thisFixation.fixation.color = cfg.fixation.colorTarget;
         end
         
         drawFixation(thisFixation);
-        
-        Screen('Flip', cfg.screen.win);
         vbl = Screen('Flip', cfg.screen.win, vbl + cfg.screen.ifi);
         
         status = PsychPortAudio('GetStatus', cfg.audio.pahandle);
+        if ~status.Active
+            break;
+        end
         
     end
     
     % Get the end time
-    waitForEndOfPlayback = 1;
+    waitForEndOfPlayback = 1; % hard coding that will need to be moved out
     [onset, ~, ~, estStopTime] = PsychPortAudio('Stop', cfg.audio.pahandle, ...
         waitForEndOfPlayback);
     
