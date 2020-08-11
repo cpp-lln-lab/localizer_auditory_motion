@@ -34,10 +34,13 @@ function cfg = setParameters
 
     %% Experiment Design
 
+    %     cfg.design.motionType = 'translation';
+    %     cfg.design.motionType = 'radial';
+    cfg.design.motionType = 'translation';
     cfg.design.names = {'static', 'motion'};
     cfg.design.possibleDirections = [-1 1]; % 1 motion , -1 static %NOT IN USE AT THE MOMENT
-    cfg.design.nbBlocks          = size(cfg.design.names, 2); % TO CHECK
-    cfg.design.nbRepetitions = 1;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
+    cfg.design.nbBlocks = size(cfg.design.names, 2); % TO CHECK
+    cfg.design.nbRepetitions = 4;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
     cfg.design.nbEventsPerBlock = 12;
 
     %% Timing
@@ -78,7 +81,7 @@ function cfg = setParameters
     cfg.fixation.yDisplacement = 0;
 
     cfg.target.maxNbPerBlock = 2;
-    cfg.target.duration = 0.05; % In secs
+    cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};
 
