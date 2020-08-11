@@ -1,4 +1,4 @@
-function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
+function [onset, duration] = doAudMot(cfg, thisEvent)
 
     % Play the auditopry stimulation of moving in 4 directions or static noise bursts
     %
@@ -55,8 +55,8 @@ function [onset, duration] = doAudMot(cfg, thisEvent, phandle)
     % end
 
     % Start the sound presentation
-    PsychPortAudio('FillBuffer', phandle, sound);
-    playTime = PsychPortAudio('Start', phandle);
+    PsychPortAudio('FillBuffer', cfg.audio.pahandle, sound);
+    playTime = PsychPortAudio('Start', cfg.audio.pahandle);
     onset = playTime;
 
     thisFixation.fixation = cfg.fixation;

@@ -30,14 +30,14 @@ cfg = createFilename(cfg);
 % Safety loop: close the screen if code crashes
 try
 
-    %% Init the experiment
-    [cfg] = initPTB(cfg);
-
     % % % REFACTOR THIS FUNCTION % % %
 
     [cfg] = loadAudioFiles(cfg);
 
     % % % REFACTOR THIS FUNCTION % % %
+
+    %% Init the experiment
+    [cfg] = initPTB(cfg);
 
     [el] = eyeTracker('Calibration', cfg);
 
@@ -71,14 +71,14 @@ try
 
     %% For Each Block
 
-    for iBlock = 1:cfg.numBlocks
+    for iBlock = 1:cfg.design.nbBlocks
 
         fprintf('\n - Running Block %.0f \n', iBlock);
 
         eyeTracker('StartRecording', cfg);
 
         % For each event in the block
-        for iEvent = 1:cfg.numEventsPerBlock
+        for iEvent = 1:cfg.design.nbEventsPerBlock
 
             % Check for experiment abortion from operator
             checkAbort(cfg, cfg.keyboard.keyboard);
@@ -101,6 +101,8 @@ try
             thisEvent.keyName = 'n/a';
             thisEvent.duration = duration;
             thisEvent.onset = onset - cfg.experimentStart;
+
+thisEvent.onset
 
             % Save the events txt logfile
             % we save event by event so we clear this variable every loop
