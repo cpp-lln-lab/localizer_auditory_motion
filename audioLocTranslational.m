@@ -51,7 +51,7 @@ try
     logFile.extraColumns = cfg.extraColumns;
     logFile = saveEventsFile('open', cfg, logFile);
 
-    disp(cfg);
+%     disp(cfg);
 
     % Show experiment instruction
     standByScreen(cfg);
@@ -101,8 +101,6 @@ try
             thisEvent.keyName = 'n/a';
             thisEvent.duration = duration;
             thisEvent.onset = onset - cfg.experimentStart;
-
-thisEvent.onset
 
             % Save the events txt logfile
             % we save event by event so we clear this variable every loop
