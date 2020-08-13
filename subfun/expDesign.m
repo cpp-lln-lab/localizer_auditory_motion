@@ -58,13 +58,16 @@ function [cfg] = expDesign(cfg, displayFigs)
     % Set variables here for a dummy test of this function
     if nargin < 1 || isempty(cfg)
         %         cfg.design.motionType = 'translation';
-        cfg.design.motionType = 'radial';
+        cfg.design.motionType = 'translation';
         cfg.design.names = {'static'; 'motion'};
-        cfg.design.nbRepetitions = 4;
+        cfg.design.nbRepetitions = 16;
         cfg.design.nbEventsPerBlock = 12;
-        cfg.target.maxNbPerBlock = 2;
+        cfg.target.maxNbPerBlock = 0;
         displayFigs = 1;
     end
+    
+    fprintf('\n\nCreating design.\n\n')
+
 
     [NB_BLOCKS, NB_REPETITIONS, NB_EVENTS_PER_BLOCK, MAX_TARGET_PER_BLOCK] = getInput(cfg);
     [~, STATIC_INDEX, MOTION_INDEX] = assignConditions(cfg);
