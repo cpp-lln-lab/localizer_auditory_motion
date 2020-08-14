@@ -12,16 +12,16 @@ function cfg = setParameters
 
     %% Debug mode settings
 
-    cfg.debug.do = true; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
-    cfg.debug.transpWin = true; % To test with trasparent full size screen
+    cfg.debug.transpWin = false; % To test with trasparent full size screen
 
     cfg.verbose = false;
 
     %% Engine parameters
 
-    cfg.testingDevice = 'pc';
-    cfg.eyeTracker.do = false;
+    cfg.testingDevice = 'mri';
+    cfg.eyeTracker.do = true;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -37,10 +37,10 @@ function cfg = setParameters
     %     cfg.design.motionType = 'translation';
     %     cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
-    cfg.design.names = {'static', 'motion'};
+    cfg.design.names = {'static'; 'motion'};
     cfg.design.possibleDirections = [-1 1]; % 1 motion , -1 static %NOT IN USE AT THE MOMENT
-    cfg.design.nbBlocks = size(cfg.design.names, 2); % TO CHECK
-    cfg.design.nbRepetitions = 4;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
+%     cfg.design.nbBlocks = size(cfg.design.names, 2); % TO CHECK
+    cfg.design.nbRepetitions = 14;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
     cfg.design.nbEventsPerBlock = 12;
 
     %% Timing
@@ -52,13 +52,13 @@ function cfg = setParameters
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
     % Time between blocs in secs
-    cfg.timing.IBI = 1.8 * 3; % 8;
+    cfg.timing.IBI = 1.8; % 8;
     % Time between events in secs
-    cfg.timing.ISI = 0.1;
+    cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
     cfg.timing.onsetDelay = .1;
     % Number of seconds after the end all the stimuli before ending the run
-    cfg.timing.endDelay = .1;
+    cfg.timing.endDelay = 3.6;
 
     %% Auditory Stimulation
 
@@ -75,12 +75,12 @@ function cfg = setParameters
     cfg.fixation.type = 'cross';
     cfg.fixation.colorTarget = cfg.color.red;
     cfg.fixation.color = cfg.color.white;
-    cfg.fixation.width = 1;
-    cfg.fixation.lineWidthPix = 2;
+    cfg.fixation.width = .5;
+    cfg.fixation.lineWidthPix = 3;
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
 
-    cfg.target.maxNbPerBlock = 2;
+    cfg.target.maxNbPerBlock = 0;
     cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};
@@ -102,14 +102,17 @@ function cfg = setMonitor(cfg)
     cfg.screen.monitorDistance = 40; % distance from the screen in cm
 
     if strcmpi(cfg.testingDevice, 'mri')
-        cfg.screen.monitorWidth = 50;
-        cfg.screen.monitorDistance = 40;
+        cfg.screen.monitorWidth = 25;
+        cfg.screen.monitorDistance = 95;
     end
 end
 
 function cfg = setKeyboards(cfg)
     cfg.keyboard.escapeKey = 'ESCAPE';
-    cfg.keyboard.responseKey = {'space', 't'};
+    cfg.keyboard.responseKey = {...
+        'r', 'g', 'y', 'b', ...
+        'd', 'n', 'z', 'e', ...
+        't'}; %dnze rgyb
     cfg.keyboard.keyboard = [];
     cfg.keyboard.responseBox = [];
 
@@ -122,7 +125,7 @@ end
 function cfg = setMRI(cfg)
     % letter sent by the trigger to sync stimulation and volume acquisition
     cfg.mri.triggerKey = 't';
-    cfg.mri.triggerNb = 4;
+    cfg.mri.triggerNb = 0;
 
     cfg.mri.repetitionTime = 1.8;
 
