@@ -44,6 +44,8 @@ try
     % % % REFACTOR THIS FUNCTION % % %
 
     [cfg] = expDesign(cfg);
+    
+    cfg.design.blockNames
 
     % % % REFACTOR THIS FUNCTION % % %
 
