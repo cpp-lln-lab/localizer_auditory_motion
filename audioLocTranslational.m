@@ -96,7 +96,7 @@ try
 
             % % % REFACTOR THIS FUNCTION % % %
             % play the sounds and collect onset and duration of the event
-            [onset, duration] = doAudMot(cfg, thisEvent);
+            [onset, duration] = doAuditoryMotion(cfg, thisEvent);
 
             thisEvent.event = iEvent;
             thisEvent.block = iBlock;
