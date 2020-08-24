@@ -38,9 +38,8 @@ function cfg = setParameters
     %     cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
-    cfg.design.possibleDirections = [-1 1]; % 1 motion , -1 static %NOT IN USE AT THE MOMENT
-%     cfg.design.nbBlocks = size(cfg.design.names, 2); % TO CHECK
-    cfg.design.nbRepetitions = 14;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
+    cfg.design.motionDirections = [-1 -1 1 1];
+    cfg.design.nbRepetitions = 14; 
     cfg.design.nbEventsPerBlock = 12;
 
     %% Timing
@@ -80,7 +79,7 @@ function cfg = setParameters
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
 
-    cfg.target.maxNbPerBlock = 0;
+    cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};

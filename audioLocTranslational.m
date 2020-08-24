@@ -40,14 +40,8 @@ try
     [cfg] = initPTB(cfg);
 
     [el] = eyeTracker('Calibration', cfg);
-
-    % % % REFACTOR THIS FUNCTION % % %
-
-    [cfg] = expDesign(cfg);
     
-    cfg.design.blockNames
-
-    % % % REFACTOR THIS FUNCTION % % %
+    [cfg] = expDesign(cfg);
 
     % Prepare for the output logfiles with all
     logFile.extraColumns = cfg.extraColumns;
