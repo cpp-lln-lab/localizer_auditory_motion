@@ -63,7 +63,7 @@ try
 
     getResponse('start', cfg.keyboard.responseBox);
 
-    WaitSecs(cfg.timing.onsetDelay);
+    waitFor(cfg, cfg.timing.onsetDelay);
 
     %% For Each Block
 
@@ -84,13 +84,19 @@ try
             thisEvent.direction = cfg.design.directions(iBlock, iEvent);
             % thisEvent.speed = cfg.design.speeds(iBlock, iEvent);
             thisEvent.target = cfg.design.fixationTargets(iBlock, iEvent);
+            
+            % we wait for a trigger every 2 events
+            if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
+                waitForTrigger( ...
+                    cfg, ...
+                    cfg.keyboard.responseBox, ...
+                    cfg.pacedByTriggers.quietMode, ...
+                    cfg.pacedByTriggers.nbTriggers);
+            end
 
             % % % REFACTOR THIS FUNCTION % % %
-
             % play the sounds and collect onset and duration of the event
             [onset, duration] = doAudMot(cfg, thisEvent);
-
-            % % % REFACTOR THIS FUNCTION % % %
 
             thisEvent.event = iEvent;
             thisEvent.block = iBlock;
@@ -116,13 +122,13 @@ try
             saveResponsesAndTriggers(responseEvents, cfg, logFile, triggerString);
 
             % wait for the inter-stimulus interval
-            WaitSecs(cfg.timing.ISI);
+            waitFor(cfg, cfg.timing.ISI);
 
         end
 
         eyeTracker('StopRecordings', cfg);
 
-        WaitSecs(cfg.timing.IBI);
+        waitFor(cfg, cfg.timing.IBI);
 
         % trigger monitoring
         triggerEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
@@ -134,7 +140,7 @@ try
     end
 
     % End of the run for the BOLD to go down
-    WaitSecs(cfg.timing.endDelay);
+    waitFor(cfg, cfg.timing.endDelay);
 
     cfg = getExperimentEnd(cfg);
 

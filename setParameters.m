@@ -31,6 +31,8 @@ function cfg = setParameters
 
     % MRI settings
     cfg = setMRI(cfg);
+    
+    cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
 
@@ -50,14 +52,34 @@ function cfg = setParameters
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
+    cfg.timing.eventDuration = 0.850; % second
+
     % Time between blocs in secs
-    cfg.timing.IBI = 1.8; % 8;
+    cfg.timing.IBI = 1.8;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
-    cfg.timing.onsetDelay = .1;
+    cfg.timing.onsetDelay = 0;
     % Number of seconds after the end all the stimuli before ending the run
     cfg.timing.endDelay = 3.6;
+
+    % reexpress those in terms of repetition time
+    if cfg.pacedByTriggers.do
+
+        cfg.pacedByTriggers.quietMode = true;
+        cfg.pacedByTriggers.nbTriggers = 1;
+
+        cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
+
+        % Time between blocs in secs
+        cfg.timing.IBI = 1;
+        % Time between events in secs
+        cfg.timing.ISI = 0;
+        % Number of seconds before the motion stimuli are presented
+        cfg.timing.onsetDelay = 0;
+        % Number of seconds after the end all the stimuli before ending the run
+        cfg.timing.endDelay = 2;
+    end
 
     %% Auditory Stimulation
 
