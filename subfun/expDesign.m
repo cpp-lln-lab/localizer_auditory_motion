@@ -59,8 +59,8 @@ function [cfg] = expDesign(cfg, displayFigs)
     if nargin < 1 || isempty(cfg)
         error('give me something to work with');
     end
-    
-    fprintf('\n\nCreating design.\n\n')
+
+    fprintf('\n\nCreating design.\n\n');
 
     [NB_BLOCKS, NB_REPETITIONS, NB_EVENTS_PER_BLOCK, MAX_TARGET_PER_BLOCK] = getInput(cfg);
     [~, STATIC_INDEX, MOTION_INDEX] = assignConditions(cfg);
