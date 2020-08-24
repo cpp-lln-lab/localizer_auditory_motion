@@ -1,4 +1,4 @@
-function [onset, duration] = doAudMot(cfg, thisEvent)
+function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     
     % Play the auditopry stimulation of moving in 4 directions or static noise bursts
     %
@@ -11,12 +11,11 @@ function [onset, duration] = doAudMot(cfg, thisEvent)
     %   - thisEvent: structure that the parameters regarding the event to present
     %
     % Output:
-    %     -
+    %     - onset in machine time
+    %     - duration in seconds
     %
     
     %% Get parameters
-    
-    sound = [];
     
     direction = thisEvent.direction(1);
     isTarget = thisEvent.target(1);
@@ -24,35 +23,24 @@ function [onset, duration] = doAudMot(cfg, thisEvent)
     
     soundData = cfg.soundData;
     
-    % if isTarget == 0
-    
-    if direction == -1
-        sound = soundData.S;
-    elseif direction == 90
-        sound = soundData.U;
-    elseif direction == 270
-        sound = soundData.D;
-    elseif direction == 0
-        sound = soundData.R;
-    elseif direction == 180
-        sound = soundData.L;
+    switch direction
+        case -1
+            fieldName = 'S';
+        case 90
+            fieldName = 'U';
+        case 270
+            fieldName = 'D';
+        case 0
+            fieldName = 'R';
+        case 180
+            fieldName = 'L';
     end
     
-    % elseif isTarget == 1
-    %
-    %   if direction == -1
-    %     sound = soundData.S_T;
-    %   elseif direction == 90
-    %     sound = soundData.U_T;
-    %   elseif direction == 270
-    %     sound = soundData.D_T;
-    %   elseif direction == 0
-    %     sound = soundData.R_T;
-    %   elseif direction == 180
-    %     sound = soundData.L_T;
-    %   end
-    %
-    % end
+    if isTarget == 1
+        fieldName = [fieldName '_T'];
+    end
+    
+    sound = soundData.(fieldName);
     
     % Start the sound presentation
     PsychPortAudio('FillBuffer', cfg.audio.pahandle, sound);

@@ -31,6 +31,8 @@ function cfg = setParameters
 
     % MRI settings
     cfg = setMRI(cfg);
+    
+    cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
 
@@ -38,9 +40,8 @@ function cfg = setParameters
     %     cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
-    cfg.design.possibleDirections = [-1 1]; % 1 motion , -1 static %NOT IN USE AT THE MOMENT
-%     cfg.design.nbBlocks = size(cfg.design.names, 2); % TO CHECK
-    cfg.design.nbRepetitions = 14;  % AT THE MOMENT IT IS NOT SET IN THE MAIN SCRIPT
+    cfg.design.motionDirections = [-1 -1 1 1];
+    cfg.design.nbRepetitions = 14; 
     cfg.design.nbEventsPerBlock = 12;
 
     %% Timing
@@ -51,14 +52,34 @@ function cfg = setParameters
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
+    cfg.timing.eventDuration = 0.850; % second
+
     % Time between blocs in secs
-    cfg.timing.IBI = 1.8; % 8;
+    cfg.timing.IBI = 1.8;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
-    cfg.timing.onsetDelay = .1;
+    cfg.timing.onsetDelay = 0;
     % Number of seconds after the end all the stimuli before ending the run
     cfg.timing.endDelay = 3.6;
+
+    % reexpress those in terms of repetition time
+    if cfg.pacedByTriggers.do
+
+        cfg.pacedByTriggers.quietMode = true;
+        cfg.pacedByTriggers.nbTriggers = 1;
+
+        cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
+
+        % Time between blocs in secs
+        cfg.timing.IBI = 1;
+        % Time between events in secs
+        cfg.timing.ISI = 0;
+        % Number of seconds before the motion stimuli are presented
+        cfg.timing.onsetDelay = 0;
+        % Number of seconds after the end all the stimuli before ending the run
+        cfg.timing.endDelay = 2;
+    end
 
     %% Auditory Stimulation
 
@@ -80,7 +101,7 @@ function cfg = setParameters
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
 
-    cfg.target.maxNbPerBlock = 0;
+    cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};

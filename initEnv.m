@@ -8,7 +8,7 @@
 %       - struct
 %       - statistics
 %
-%   MATLAB > R2017a
+%   MATLAB >= R2015b
 %
 % 2 - Add project to the O/M path
 
@@ -17,6 +17,8 @@ function initEnv
     octaveVersion = '4.0.3';
     matlabVersion = '8.6.0';
 
+    installlist = {'io', 'statistics', 'image'};
+
     if isOctave
 
         % Exit if min version is not satisfied
@@ -24,27 +26,19 @@ function initEnv
             error('Minimum required Octave version: %s', octaveVersion);
         end
 
-        installlist = {'statistics', 'image'};
         for ii = 1:length(installlist)
+
+            packageName = installlist{ii};
+
             try
                 % Try loading Octave packages
-                disp(['loading ' installlist{ii}]);
-                pkg('load', installlist{ii});
+                disp(['loading ' packageName]);
+                pkg('load', packageName);
 
             catch
-                errorcount = 1;
-                while errorcount % Attempt twice in case installation fails
-                    try
-                        pkg('install', '-forge', installlist{ii});
-                        pkg('load', installlist{ii});
-                        errorcount = 0;
-                    catch err
-                        errorcount = errorcount + 1;
-                        if errorcount > 2
-                            error(err.message);
-                        end
-                    end
-                end
+
+                tryInstallFromForge(packageName);
+
             end
         end
 
@@ -58,7 +52,9 @@ function initEnv
 
     % If external dir is empty throw an exception
     % and ask user to update submodules.
-    if numel(dir('lib')) <= 2 % Means that the external is empty
+    libDirectory = fullfile(fileparts(mfilename('fullpath')), 'lib');
+
+    if numel(dir(libDirectory)) <= 2 % Means that the external is empty
         error(['Git submodules are not cloned!', ...
               'Try this in your terminal:', ...
               ' git submodule update --recursive ']);
@@ -70,10 +66,8 @@ function initEnv
 
 end
 
-%%
-%% Return: true if the environment is Octave.
-%%
 function retval = isOctave
+    % Return: true if the environment is Octave.
     persistent cacheval   % speeds up repeated calls
 
     if isempty (cacheval)
@@ -81,14 +75,32 @@ function retval = isOctave
     end
 
     retval = cacheval;
+
+end
+
+function tryInstallFromForge(packageName)
+
+    errorcount = 1;
+    while errorcount % Attempt twice in case installation fails
+        try
+            pkg('install', '-forge', packageName);
+            pkg('load', packageName);
+            errorcount = 0;
+        catch err
+            errorcount = errorcount + 1;
+            if errorcount > 2
+                error(err.message);
+            end
+        end
+    end
+
 end
 
 function addDependencies()
 
     pth = fileparts(mfilename('fullpath'));
     addpath(genpath(fullfile(pth, 'lib', 'CPP_BIDS', 'src')));
-    addpath(fullfile(pth, 'lib', 'CPP_PTB'));
+    addpath(genpath(fullfile(pth, 'lib', 'CPP_PTB', 'src')));
     addpath(fullfile(pth, 'subfun'));
-    addpath(fullfile(pth, 'input'));
 
 end
