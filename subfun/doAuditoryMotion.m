@@ -1,5 +1,5 @@
 function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
-    
+
     % Play the auditopry stimulation of moving in 4 directions or static noise bursts
     %
     % DIRECTIONS
@@ -14,15 +14,15 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     %     - onset in machine time
     %     - duration in seconds
     %
-    
+
     %% Get parameters
-    
+
     direction = thisEvent.direction(1);
     isTarget = thisEvent.target(1);
     targetDuration = cfg.target.duration;
-    
+
     soundData = cfg.soundData;
-    
+
     switch direction
         case -1
             fieldName = 'S';
@@ -35,18 +35,18 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
         case 180
             fieldName = 'L';
     end
-    
+
     if isTarget == 1
         fieldName = [fieldName '_T'];
     end
-    
+
     sound = soundData.(fieldName);
-    
+
     % Start the sound presentation
     PsychPortAudio('FillBuffer', cfg.audio.pahandle, sound);
     PsychPortAudio('Start', cfg.audio.pahandle);
     onset = GetSecs;
-    
+
     % draw first fixation and get a first visual time stamp
     % ideally we would want to synch that first time stamp and the sound start
     thisFixation.fixation = cfg.fixation;
@@ -56,29 +56,29 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     end
     drawFixation(thisFixation);
     vbl = Screen('Flip', cfg.screen.win);
-    
+
     while 1
-        
+
         % set default cross cross color but update if target time is not
         % finished
         thisFixation.fixation.color = cfg.fixation.color;
         if GetSecs < (onset + targetDuration) && isTarget == 1
             thisFixation.fixation.color = cfg.fixation.colorTarget;
         end
-        
+
         drawFixation(thisFixation);
         vbl = Screen('Flip', cfg.screen.win, vbl + cfg.screen.ifi);
-        
+
         status = PsychPortAudio('GetStatus', cfg.audio.pahandle);
         if ~status.Active
-            break;
+            break
         end
-        
+
     end
-    
+
     % Get the end time
     waitForEndOfPlayback = 1; % hard coding that will need to be moved out
     [onset, ~, ~, estStopTime] = PsychPortAudio('Stop', cfg.audio.pahandle, ...
         waitForEndOfPlayback);
-    
+
     duration = estStopTime - onset;

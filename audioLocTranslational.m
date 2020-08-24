@@ -40,14 +40,14 @@ try
     [cfg] = initPTB(cfg);
 
     [el] = eyeTracker('Calibration', cfg);
-    
+
     [cfg] = expDesign(cfg);
 
     % Prepare for the output logfiles with all
     logFile.extraColumns = cfg.extraColumns;
     logFile = saveEventsFile('open', cfg, logFile);
 
-%     disp(cfg);
+    %     disp(cfg);
 
     % Show experiment instruction
     standByScreen(cfg);
@@ -84,7 +84,7 @@ try
             thisEvent.direction = cfg.design.directions(iBlock, iEvent);
             % thisEvent.speed = cfg.design.speeds(iBlock, iEvent);
             thisEvent.target = cfg.design.fixationTargets(iBlock, iEvent);
-            
+
             % we wait for a trigger every 2 events
             if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
                 waitForTrigger( ...

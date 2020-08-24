@@ -31,7 +31,7 @@ function cfg = setParameters
 
     % MRI settings
     cfg = setMRI(cfg);
-    
+
     cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
@@ -41,7 +41,7 @@ function cfg = setParameters
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     cfg.design.motionDirections = [-1 -1 1 1];
-    cfg.design.nbRepetitions = 14; 
+    cfg.design.nbRepetitions = 14;
     cfg.design.nbEventsPerBlock = 12;
 
     %% Timing
@@ -130,10 +130,10 @@ end
 
 function cfg = setKeyboards(cfg)
     cfg.keyboard.escapeKey = 'ESCAPE';
-    cfg.keyboard.responseKey = {...
+    cfg.keyboard.responseKey = { ...
         'r', 'g', 'y', 'b', ...
         'd', 'n', 'z', 'e', ...
-        't'}; %dnze rgyb
+        't'}; % dnze rgyb
     cfg.keyboard.keyboard = [];
     cfg.keyboard.responseBox = [];
 
