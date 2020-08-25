@@ -41,7 +41,7 @@ function cfg = setParameters
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
-    cfg.design.motionDirections = [0 0 180 180]; 
+    cfg.design.motionDirections = [0 0 180 180];
     cfg.design.nbRepetitions = 14;
     cfg.design.nbEventsPerBlock = 12;
 

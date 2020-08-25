@@ -21,11 +21,11 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     isFixationTarget = thisEvent.fixationTarget(1);
     targetDuration = cfg.target.duration;
 
-    % % % WIP % % % 
-    
+    % % % WIP % % %
+
     % isSoundTarget = thisEvent.soundTarget(1);
-    
-    % % % WIP % % % 
+
+    % % % WIP % % %
 
     soundData = cfg.soundData;
 
@@ -39,11 +39,11 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     end
 
     % % % WIP % % %
-    
-%     if isSoundTarget == 1
-%         fieldName = [fieldName '_T'];
-%     end
-    
+
+    % if isSoundTarget == 1
+    %     fieldName = [fieldName '_T'];
+    % end
+
     % % % WIP % % %
 
     sound = soundData.(fieldName);
