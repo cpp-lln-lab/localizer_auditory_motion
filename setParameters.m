@@ -91,7 +91,8 @@ function cfg = setParameters
     cfg.task.name = 'auditory localizer';
 
     % Instruction
-    cfg.task.instruction = '1-Detect the RED fixation cross\n \n\n';
+    cfg.task.instruction = ['1 - Detect the RED fixation cross\n' ...
+      '2 - Detected the shorter repeated sounds'];
 
     % Fixation cross (in pixels)
     cfg.fixation.type = 'cross';
@@ -101,7 +102,7 @@ function cfg = setParameters
     cfg.fixation.lineWidthPix = 3;
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
-
+    
     cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
@@ -151,7 +152,8 @@ function cfg = setMRI(cfg)
 
     cfg.mri.repetitionTime = 1.8;
 
-    cfg.bids.MRI.Instructions = 'Detect the RED fixation cross';
+    cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
+      '2 - Detected the shorter repeated sounds'];
     cfg.bids.MRI.TaskDescription = [];
 
 end
