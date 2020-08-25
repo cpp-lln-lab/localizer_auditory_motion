@@ -20,12 +20,8 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     direction = thisEvent.direction(1);
     isFixationTarget = thisEvent.fixationTarget(1);
     targetDuration = cfg.target.duration;
+    isSoundTarget = thisEvent.soundTarget(1);
 
-    % % % WIP % % %
-
-    % isSoundTarget = thisEvent.soundTarget(1);
-
-    % % % WIP % % %
 
     soundData = cfg.soundData;
 
@@ -38,13 +34,9 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
             fieldName = 'RLR';
     end
 
-    % % % WIP % % %
-
-    % if isSoundTarget == 1
-    %     fieldName = [fieldName '_T'];
-    % end
-
-    % % % WIP % % %
+    if isSoundTarget == 1
+        fieldName = [fieldName '_T'];
+    end
 
     sound = soundData.(fieldName);
 

@@ -83,12 +83,7 @@ try
             thisEvent.trial_type = cfg.design.blockNames{iBlock};
             thisEvent.direction = cfg.design.directions(iBlock, iEvent);
             thisEvent.fixationTarget = cfg.design.fixationTargets(iBlock, iEvent);
-
-            % % % WIP % % %
-
-            % thisEvent.soundTarget = cfg.design.soundTargets(iBlock, iEvent);
-
-            % % % WIP % % %
+            thisEvent.soundTarget = cfg.design.soundTargets(iBlock, iEvent);
 
             % we wait for a trigger every 2 events
             if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
