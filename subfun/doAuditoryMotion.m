@@ -40,12 +40,11 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
 
     % % % WIP % % %
     
-    if isSoundTarget == 1
-        fieldName = [fieldName '_T'];
-    end
+%     if isSoundTarget == 1
+%         fieldName = [fieldName '_T'];
+%     end
     
     % % % WIP % % %
-
 
     sound = soundData.(fieldName);
 
