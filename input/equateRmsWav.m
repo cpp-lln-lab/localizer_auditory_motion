@@ -35,9 +35,8 @@ runFunction (referenceWavFn,targetWavFn)
 
 end
 
-
 function runFunction (referenceWavFn,targetWavFn)
-%% This Script takes a file (targetWavFn) and equates its rms with
+% This Script takes a file (targetWavFn) and equates its rms with
 % another reference audio file (referenceWavFn) amd gives the equated
 % wav file as an output ('final_wave.wav')
 
@@ -65,10 +64,9 @@ finalWav = [ targetWav(:,1)*(referenceRMS(1)/targetRms(1)) ...
 finalRms = rms(finalWav);
 disp('rms of the final wav file')
 disp(finalRms)
-%wavwrite(new_wave,'new_wave.wav')
-%audiowrite(target_wav_fn,final_wave,FS_reference)
-%wavwrite(final_wave,FS_reference,16,['rms_',target_wav_fn])
+
 audiowrite([targetWavFn(1:end-4), '_rms.wav'],finalWav,referenceFs)
+
 %% plot the reference wav and final wav files
 figure()
 subplot(2,1,1)
