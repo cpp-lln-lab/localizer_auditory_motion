@@ -34,7 +34,7 @@ function equateRmsWav(subjName)
 
 end
 
-    function runFunction (referenceWavFn, targetWavFn)
+function runFunction (referenceWavFn, targetWavFn)
     % This Script takes a file (targetWavFn) and equates its rms with
     % another reference audio file (referenceWavFn) amd gives the equated
     % wav file as an output ('final_wave.wav')
