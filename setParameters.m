@@ -12,7 +12,7 @@ function cfg = setParameters
 
     %% Debug mode settings
 
-    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = true; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
@@ -21,7 +21,7 @@ function cfg = setParameters
     %% Engine parameters
 
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = true;
+    cfg.eyeTracker.do = false;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -40,7 +40,8 @@ function cfg = setParameters
     %     cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
-    cfg.design.motionDirections = [-1 -1 1 1];
+    % 0: L--R--L; 180: R--L--R;
+    cfg.design.motionDirections = [0 0 180 180];
     cfg.design.nbRepetitions = 14;
     cfg.design.nbEventsPerBlock = 12;
 
