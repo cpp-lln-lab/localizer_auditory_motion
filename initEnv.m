@@ -102,6 +102,5 @@ function addDependencies()
     addpath(genpath(fullfile(pth, 'lib', 'CPP_BIDS', 'src')));
     addpath(genpath(fullfile(pth, 'lib', 'CPP_PTB', 'src')));
     addpath(fullfile(pth, 'subfun'));
-    addpath(fullfile(pth, 'input'));
 
 end
