@@ -76,7 +76,7 @@ function [cfg] = expDesign(cfg, displayFigs)
     while 1
 
         fixationTargets = zeros(NB_BLOCKS, NB_EVENTS_PER_BLOCK);
-        
+
         soundTargets = zeros(NB_BLOCKS, NB_EVENTS_PER_BLOCK);
 
         for iBlock = 1:NB_BLOCKS
@@ -95,7 +95,7 @@ function [cfg] = expDesign(cfg, displayFigs)
                 [1 NB_EVENTS_PER_BLOCK]);
 
             fixationTargets(iBlock, chosenPosition) = 1;
-            
+
             % Sound targets
             nbTarget = numTargetsForEachBlock(iBlock);
 
@@ -123,7 +123,7 @@ function [cfg] = expDesign(cfg, displayFigs)
     cfg = setDirections(cfg);
 
     cfg.design.fixationTargets = fixationTargets;
-    
+
     cfg.design.soundTargets = soundTargets;
 
     %% Plot

@@ -22,7 +22,6 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     targetDuration = cfg.target.duration;
     isSoundTarget = thisEvent.soundTarget(1);
 
-
     soundData = cfg.soundData;
 
     switch direction

@@ -102,7 +102,7 @@ function cfg = setParameters
     cfg.fixation.lineWidthPix = 3;
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
-    
+
     cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
