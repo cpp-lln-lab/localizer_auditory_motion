@@ -1,5 +1,6 @@
 function equateRmsWav(subjName)
-
+% function equateRmsWav(subjName)
+% Not used during the experiment itself but allows to root mean square the sounds of a given subject.
     if nargin < 1
         subjName = input('Enter Subjects name: ', 's');
     end
