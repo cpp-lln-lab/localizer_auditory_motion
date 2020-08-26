@@ -106,7 +106,7 @@ function cfg = setParameters
     cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
-    cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};
+    cfg.extraColumns = {'direction', 'soundTarget', 'fixationTarget', 'event', 'block', 'keyName'};
 
 end
 
