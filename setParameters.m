@@ -1,5 +1,7 @@
 function cfg = setParameters
 
+    % AUDITORY LOCALIZER
+
     % Initialize the parameters and general configuration variables
     cfg = struct();
 
@@ -12,7 +14,7 @@ function cfg = setParameters
 
     %% Debug mode settings
 
-    cfg.debug.do = true; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
@@ -21,7 +23,7 @@ function cfg = setParameters
     %% Engine parameters
 
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = false;
+    cfg.eyeTracker.do = true;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -56,7 +58,7 @@ function cfg = setParameters
     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
-    cfg.timing.IBI = 1.8;
+    cfg.timing.IBI = 0;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
@@ -73,7 +75,7 @@ function cfg = setParameters
         cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
 
         % Time between blocs in secs
-        cfg.timing.IBI = 1;
+        cfg.timing.IBI = 0;
         % Time between events in secs
         cfg.timing.ISI = 0;
         % Number of seconds before the motion stimuli are presented
@@ -148,7 +150,7 @@ end
 function cfg = setMRI(cfg)
     % letter sent by the trigger to sync stimulation and volume acquisition
     cfg.mri.triggerKey = 't';
-    cfg.mri.triggerNb = 0;
+    cfg.mri.triggerNb = 5;
 
     cfg.mri.repetitionTime = 1.8;
 
