@@ -152,7 +152,7 @@ try
 
     eyeTracker('Shutdown', cfg);
 
-    createBoldJson(cfg, cfg);
+    createJson(cfg, cfg);
 
     farewellScreen(cfg);
 
