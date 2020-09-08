@@ -75,6 +75,31 @@ Any details of the experiment can be changed in `setParameters.m` (e.g., experim
 - Task(s)
   - Instructions
   - Task #1 parameters
+   
+#### Let the scanner pace the experiment
+
+Set `cfg.pacedByTriggers.do` to `true` and you can then set all the details in this `if` block
+
+```matlab
+% Time is here in in terms of number repetition time (i.e MRI volumes)
+if cfg.pacedByTriggers.do
+
+  cfg.pacedByTriggers.quietMode = true;
+  cfg.pacedByTriggers.nbTriggers = 1;
+
+  cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
+
+  % Time between blocs in secs
+  cfg.timing.IBI = 0;
+  % Time between events in secs
+  cfg.timing.ISI = 0;
+  % Number of seconds before the motion stimuli are presented
+  cfg.timing.onsetDelay = 0;
+  % Number of seconds after the end all the stimuli before ending the run
+  cfg.timing.endDelay = 2;
+
+end
+```
 
 ### 3.3. <a name='subfunexpDesign'></a>subfun/expDesign
 
@@ -103,10 +128,4 @@ The `numEventsPerBlock` should be a multiple of the number of "base" listed in t
 - `expParameters.designSpeeds` is an array `(nr_blocks, numEventsPerBlock) * speedEvent`
 - `expParameters.designFixationTargets` is an array `(nr_blocks, numEventsPerBlock)` showing for each event if it should be accompanied by a target
 
-### 3.4. <a name='subfuneyeTracker'></a>subfun/eyeTracker
 
-Eyetracker script, still to be debugged. Will probably moved in the CPP_PTB package. It deals with the calibration (dufault or custom), eye movements recording and saving the files.
-
-### 3.5. <a name='subfunwait4Trigger'></a>subfun/wait4Trigger
-
-Simple functions that counts the triggers sent by the MRI computer to the stimulation computer to sync brain volume recordings and stimulation.
