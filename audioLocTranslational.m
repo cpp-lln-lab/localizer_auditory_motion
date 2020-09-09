@@ -151,7 +151,7 @@ try
     getResponse('release', cfg.keyboard.responseBox);
 
     eyeTracker('Shutdown', cfg);
-    
+
     % remove the sound data from the cfg before saving it.
     cfg = rmfield(cfg, 'soundData');
     createJson(cfg, cfg);
