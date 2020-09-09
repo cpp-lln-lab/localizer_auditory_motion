@@ -66,7 +66,7 @@ function cfg = setParameters
     % Number of seconds after the end all the stimuli before ending the run
     cfg.timing.endDelay = 3.6;
 
-    % reexpress those in terms of repetition time
+    % reexpress those in terms of number repetition time
     if cfg.pacedByTriggers.do
 
         cfg.pacedByTriggers.quietMode = true;
