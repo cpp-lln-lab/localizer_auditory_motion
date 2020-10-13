@@ -1,0 +1,61 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mohmdrezk",
+      "name": "Mohamed Rezk",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9597815?v=4",
+      "profile": "https://github.com/mohmdrezk",
+      "contributions": [
+        "code",
+        "design",
+        "ideas"
+      ]
+    },
+    {
+      "login": "Remi-Gau",
+      "name": "Remi Gau",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6961185?v=4",
+      "profile": "https://remi-gau.github.io/",
+      "contributions": [
+        "code",
+        "design",
+        "ideas",
+        "bug",
+        "userTesting",
+        "review",
+        "question",
+        "infra",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "marcobarilari",
+      "name": "marcobarilari",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/38101692?v=4",
+      "profile": "https://github.com/marcobarilari",
+      "contributions": [
+        "code",
+        "design",
+        "ideas",
+        "bug",
+        "userTesting",
+        "review",
+        "question",
+        "infra",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "localizer_auditory_motion",
+  "projectOwner": "cpp-lln-lab",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": false,
+  "contributorsSortAlphabetically": true
+}

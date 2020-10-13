@@ -77,14 +77,16 @@ function [cfg] = expDesign(cfg, displayFigs)
 
         fixationTargets = zeros(NB_BLOCKS, NB_EVENTS_PER_BLOCK);
 
+        soundTargets = zeros(NB_BLOCKS, NB_EVENTS_PER_BLOCK);
+
         for iBlock = 1:NB_BLOCKS
 
             % Set target
             % - if there are 2 targets per block we make sure that they are at least
             % 2 events apart
             % - targets cannot be on the first or last event of a block
-            % - no more than 2 target in the same event order
 
+            % Fixation targets
             nbTarget = numTargetsForEachBlock(iBlock);
 
             chosenPosition = setTargetPositionInSequence( ...
@@ -94,10 +96,20 @@ function [cfg] = expDesign(cfg, displayFigs)
 
             fixationTargets(iBlock, chosenPosition) = 1;
 
+            % Sound targets
+            nbTarget = numTargetsForEachBlock(iBlock);
+
+            chosenPosition = setTargetPositionInSequence( ...
+                NB_EVENTS_PER_BLOCK, ...
+                nbTarget, ...
+                [1 NB_EVENTS_PER_BLOCK]);
+
+            soundTargets(iBlock, chosenPosition) = 1;
+
         end
 
-        % Check rule 3
-        if max(sum(fixationTargets)) < NB_REPETITIONS - 1
+        % Check that fixation and shorter sound are not presented in the same event
+        if max(unique(fixationTargets + soundTargets)) < 2
             break
         end
 
@@ -111,6 +123,8 @@ function [cfg] = expDesign(cfg, displayFigs)
     cfg = setDirections(cfg);
 
     cfg.design.fixationTargets = fixationTargets;
+
+    cfg.design.soundTargets = soundTargets;
 
     %% Plot
     diplayDesign(cfg, displayFigs);

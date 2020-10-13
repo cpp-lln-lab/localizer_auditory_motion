@@ -82,8 +82,8 @@ try
             % set direction, speed of that event and if it is a target
             thisEvent.trial_type = cfg.design.blockNames{iBlock};
             thisEvent.direction = cfg.design.directions(iBlock, iEvent);
-            % thisEvent.speed = cfg.design.speeds(iBlock, iEvent);
-            thisEvent.target = cfg.design.fixationTargets(iBlock, iEvent);
+            thisEvent.fixationTarget = cfg.design.fixationTargets(iBlock, iEvent);
+            thisEvent.soundTarget = cfg.design.soundTargets(iBlock, iEvent);
 
             % we wait for a trigger every 2 events
             if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
@@ -152,7 +152,7 @@ try
 
     eyeTracker('Shutdown', cfg);
 
-    createBoldJson(cfg, cfg);
+    createJson(cfg, cfg);
 
     farewellScreen(cfg);
 

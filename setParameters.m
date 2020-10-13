@@ -1,5 +1,7 @@
 function cfg = setParameters
 
+    % AUDITORY LOCALIZER
+
     % Initialize the parameters and general configuration variables
     cfg = struct();
 
@@ -12,7 +14,7 @@ function cfg = setParameters
 
     %% Debug mode settings
 
-    cfg.debug.do = true; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
@@ -21,7 +23,7 @@ function cfg = setParameters
     %% Engine parameters
 
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = false;
+    cfg.eyeTracker.do = true;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -40,7 +42,8 @@ function cfg = setParameters
     %     cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
-    cfg.design.motionDirections = [-1 -1 1 1];
+    % 0: L--R--L; 180: R--L--R;
+    cfg.design.motionDirections = [0 0 180 180];
     cfg.design.nbRepetitions = 14;
     cfg.design.nbEventsPerBlock = 12;
 
@@ -55,7 +58,7 @@ function cfg = setParameters
     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
-    cfg.timing.IBI = 1.8;
+    cfg.timing.IBI = 0;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
@@ -63,7 +66,7 @@ function cfg = setParameters
     % Number of seconds after the end all the stimuli before ending the run
     cfg.timing.endDelay = 3.6;
 
-    % reexpress those in terms of repetition time
+    % reexpress those in terms of number repetition time
     if cfg.pacedByTriggers.do
 
         cfg.pacedByTriggers.quietMode = true;
@@ -72,7 +75,7 @@ function cfg = setParameters
         cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
 
         % Time between blocs in secs
-        cfg.timing.IBI = 1;
+        cfg.timing.IBI = 0;
         % Time between events in secs
         cfg.timing.ISI = 0;
         % Number of seconds before the motion stimuli are presented
@@ -90,7 +93,8 @@ function cfg = setParameters
     cfg.task.name = 'auditory localizer';
 
     % Instruction
-    cfg.task.instruction = '1-Detect the RED fixation cross\n \n\n';
+    cfg.task.instruction = ['1 - Detect the RED fixation cross\n' ...
+      '2 - Detected the shorter repeated sounds'];
 
     % Fixation cross (in pixels)
     cfg.fixation.type = 'cross';
@@ -104,7 +108,7 @@ function cfg = setParameters
     cfg.target.maxNbPerBlock = 2;
     cfg.target.duration = 0.5; % In secs
 
-    cfg.extraColumns = {'direction', 'speed', 'target', 'event', 'block', 'keyName'};
+    cfg.extraColumns = {'direction', 'soundTarget', 'fixationTarget', 'event', 'block', 'keyName'};
 
 end
 
@@ -146,11 +150,12 @@ end
 function cfg = setMRI(cfg)
     % letter sent by the trigger to sync stimulation and volume acquisition
     cfg.mri.triggerKey = 't';
-    cfg.mri.triggerNb = 0;
+    cfg.mri.triggerNb = 5;
 
     cfg.mri.repetitionTime = 1.8;
 
-    cfg.bids.MRI.Instructions = 'Detect the RED fixation cross';
+    cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
+      '2 - Detected the shorter repeated sounds'];
     cfg.bids.MRI.TaskDescription = [];
 
 end

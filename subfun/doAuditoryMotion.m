@@ -18,25 +18,22 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     %% Get parameters
 
     direction = thisEvent.direction(1);
-    isTarget = thisEvent.target(1);
+    isFixationTarget = thisEvent.fixationTarget(1);
     targetDuration = cfg.target.duration;
+    isSoundTarget = thisEvent.soundTarget(1);
 
     soundData = cfg.soundData;
 
     switch direction
         case -1
             fieldName = 'S';
-        case 90
-            fieldName = 'U';
-        case 270
-            fieldName = 'D';
         case 0
-            fieldName = 'R';
+            fieldName = 'LRL';
         case 180
-            fieldName = 'L';
+            fieldName = 'RLR';
     end
 
-    if isTarget == 1
+    if isSoundTarget == 1
         fieldName = [fieldName '_T'];
     end
 
@@ -51,7 +48,7 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     % ideally we would want to synch that first time stamp and the sound start
     thisFixation.fixation = cfg.fixation;
     thisFixation.screen = cfg.screen;
-    if isTarget == 1
+    if isFixationTarget == 1
         thisFixation.fixation.color = cfg.fixation.colorTarget;
     end
     drawFixation(thisFixation);
@@ -62,7 +59,7 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
         % set default cross cross color but update if target time is not
         % finished
         thisFixation.fixation.color = cfg.fixation.color;
-        if GetSecs < (onset + targetDuration) && isTarget == 1
+        if GetSecs < (onset + targetDuration) && isFixationTarget == 1
             thisFixation.fixation.color = cfg.fixation.colorTarget;
         end
 
