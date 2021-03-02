@@ -23,7 +23,7 @@ function cfg = setParameters
     %% Engine parameters
 
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = true;
+    cfg.eyeTracker.do = false;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -34,7 +34,7 @@ function cfg = setParameters
     % MRI settings
     cfg = setMRI(cfg);
 
-    cfg.pacedByTriggers.do = true;
+    cfg.pacedByTriggers.do = false;
 
     %% Experiment Design
 
