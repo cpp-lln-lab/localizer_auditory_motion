@@ -152,6 +152,8 @@ try
 
     eyeTracker('Shutdown', cfg);
 
+    % remove the sound data from the cfg before saving it.
+    cfg = rmfield(cfg, 'soundData');
     createJson(cfg, cfg);
 
     farewellScreen(cfg);
