@@ -18,7 +18,7 @@ function cfg = setParameters
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
-    cfg.verbose = false;
+    cfg.verbose = 1;
 
     %% Engine parameters
 
@@ -50,12 +50,12 @@ function cfg = setParameters
     %% Timing
 
     % FOR 7T: if you want to create localizers on the fly, the following must be
-    % multiples of the scanneryour sequence TR
+    % multiples of the scanner sequence TR
     %
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
-    cfg.timing.eventDuration = 0.850; % second
+%     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
     cfg.timing.IBI = 0;
