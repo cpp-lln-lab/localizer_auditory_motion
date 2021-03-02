@@ -43,9 +43,9 @@ function cfg = setParameters
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
-    cfg.design.motionDirections = [0 0 180 180];
+    cfg.design.motionDirections = [0 180];
     cfg.design.nbRepetitions = 14;
-    cfg.design.nbEventsPerBlock = 12;
+    cfg.design.nbEventsPerBlock = 6;
 
     %% Timing
 
@@ -55,7 +55,8 @@ function cfg = setParameters
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
-%     cfg.timing.eventDuration = 0.850; % second
+    % for info: not actually used since "defined" by the sound duration
+    %     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
     cfg.timing.IBI = 0;
@@ -105,7 +106,7 @@ function cfg = setParameters
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
 
-    cfg.target.maxNbPerBlock = 2;
+    cfg.target.maxNbPerBlock = 1;
     cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'soundTarget', 'fixationTarget', 'event', 'block', 'keyName'};
