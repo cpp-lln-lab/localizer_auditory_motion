@@ -45,6 +45,7 @@ try
 
     % Prepare for the output logfiles with all
     logFile.extraColumns = cfg.extraColumns;
+    logFile = saveEventsFile('init', cfg, logFile);
     logFile = saveEventsFile('open', cfg, logFile);
 
     %     disp(cfg);
@@ -84,6 +85,8 @@ try
             thisEvent.direction = cfg.design.directions(iBlock, iEvent);
             thisEvent.fixationTarget = cfg.design.fixationTargets(iBlock, iEvent);
             thisEvent.soundTarget = cfg.design.soundTargets(iBlock, iEvent);
+            
+            thisEvent.isStim = logFile.isStim;
 
             % we wait for a trigger every 2 events
             if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
