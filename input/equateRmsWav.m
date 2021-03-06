@@ -55,7 +55,7 @@ function runFunction (referenceWavFn, targetWavFn)
 
     % correct for the rms differences in each channel
     finalWav = [targetWav(:, 1) * (referenceRMS(1) / targetRms(1)) ...
-                   targetWav(:, 2) * (referenceRMS(2) / targetRms(2))];
+                targetWav(:, 2) * (referenceRMS(2) / targetRms(2))];
 
     % check that the rms of the final is similar to the original
     finalRms = rms(finalWav);

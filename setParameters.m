@@ -9,8 +9,7 @@ function cfg = setParameters
     % setParamters.m file is
     % change that if you want the data to be saved somewhere else
     cfg.dir.output = fullfile( ...
-        fileparts(mfilename('fullpath')), '..', ...
-        'output');
+                              fileparts(mfilename('fullpath')), 'output');
 
     %% Debug mode settings
 
@@ -18,7 +17,10 @@ function cfg = setParameters
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
-    cfg.verbose = false;
+    cfg.verbose = 1;
+    cfg.skipSyncTests = 0;
+
+    cfg.audio.devIdx = 3; % 5 %11
 
     %% Engine parameters
 
@@ -32,9 +34,11 @@ function cfg = setParameters
     cfg = setKeyboards(cfg);
 
     % MRI settings
-    cfg = setMRI(cfg);
 
-    cfg.pacedByTriggers.do = true;
+    cfg = setMRI(cfg);
+    cfg.suffix.acquisition = '0p75mmEv';
+
+    cfg.pacedByTriggers.do = false;
 
     %% Experiment Design
 
@@ -43,19 +47,20 @@ function cfg = setParameters
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
-    cfg.design.motionDirections = [0 0 180 180];
-    cfg.design.nbRepetitions = 14;
-    cfg.design.nbEventsPerBlock = 12;
+    cfg.design.motionDirections = [0 180];
+    cfg.design.nbRepetitions = 21;
+    cfg.design.nbEventsPerBlock = 6;
 
     %% Timing
 
     % FOR 7T: if you want to create localizers on the fly, the following must be
-    % multiples of the scanneryour sequence TR
+    % multiples of the scanner sequence TR
     %
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
-    cfg.timing.eventDuration = 0.850; % second
+    % for info: not actually used since "defined" by the sound duration
+    %     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
     cfg.timing.IBI = 0;
@@ -94,7 +99,7 @@ function cfg = setParameters
 
     % Instruction
     cfg.task.instruction = ['1 - Detect the RED fixation cross\n' ...
-      '2 - Detected the shorter repeated sounds'];
+                            '2 - Detected the shorter repeated sounds'];
 
     % Fixation cross (in pixels)
     cfg.fixation.type = 'cross';
@@ -105,7 +110,7 @@ function cfg = setParameters
     cfg.fixation.xDisplacement = 0;
     cfg.fixation.yDisplacement = 0;
 
-    cfg.target.maxNbPerBlock = 2;
+    cfg.target.maxNbPerBlock = 1;
     cfg.target.duration = 0.5; % In secs
 
     cfg.extraColumns = {'direction', 'soundTarget', 'fixationTarget', 'event', 'block', 'keyName'};
@@ -135,9 +140,9 @@ end
 function cfg = setKeyboards(cfg)
     cfg.keyboard.escapeKey = 'ESCAPE';
     cfg.keyboard.responseKey = { ...
-        'r', 'g', 'y', 'b', ...
-        'd', 'n', 'z', 'e', ...
-        't'}; % dnze rgyb
+                                'r', 'g', 'y', 'b', ...
+                                'd', 'n', 'z', 'e', ...
+                                't'}; % dnze rgyb
     cfg.keyboard.keyboard = [];
     cfg.keyboard.responseBox = [];
 
@@ -155,7 +160,7 @@ function cfg = setMRI(cfg)
     cfg.mri.repetitionTime = 1.8;
 
     cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
-      '2 - Detected the shorter repeated sounds'];
+                                 '2 - Detected the shorter repeated sounds'];
     cfg.bids.MRI.TaskDescription = [];
 
 end

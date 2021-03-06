@@ -45,6 +45,7 @@ try
 
     % Prepare for the output logfiles with all
     logFile.extraColumns = cfg.extraColumns;
+    logFile = saveEventsFile('init', cfg, logFile);
     logFile = saveEventsFile('open', cfg, logFile);
 
     %     disp(cfg);
@@ -85,13 +86,15 @@ try
             thisEvent.fixationTarget = cfg.design.fixationTargets(iBlock, iEvent);
             thisEvent.soundTarget = cfg.design.soundTargets(iBlock, iEvent);
 
+            thisEvent.isStim = logFile.isStim;
+
             % we wait for a trigger every 2 events
             if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
                 waitForTrigger( ...
-                    cfg, ...
-                    cfg.keyboard.responseBox, ...
-                    cfg.pacedByTriggers.quietMode, ...
-                    cfg.pacedByTriggers.nbTriggers);
+                               cfg, ...
+                               cfg.keyboard.responseBox, ...
+                               cfg.pacedByTriggers.quietMode, ...
+                               cfg.pacedByTriggers.nbTriggers);
             end
 
             % % % REFACTOR THIS FUNCTION % % %
@@ -116,7 +119,7 @@ try
             % collect the responses and appends to the event structure for
             % saving in the tsv file
             responseEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
-                getOnlyPress);
+                                         getOnlyPress);
 
             triggerString = ['trigger_' cfg.design.blockNames{iBlock}];
             saveResponsesAndTriggers(responseEvents, cfg, logFile, triggerString);
@@ -132,7 +135,7 @@ try
 
         % trigger monitoring
         triggerEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
-            getOnlyPress);
+                                    getOnlyPress);
 
         triggerString = 'trigger_baseline';
         saveResponsesAndTriggers(triggerEvents, cfg, logFile, triggerString);
@@ -152,6 +155,8 @@ try
 
     eyeTracker('Shutdown', cfg);
 
+    % remove the sound data from the cfg before saving it.
+    cfg = rmfield(cfg, 'soundData');
     createJson(cfg, cfg);
 
     farewellScreen(cfg);
