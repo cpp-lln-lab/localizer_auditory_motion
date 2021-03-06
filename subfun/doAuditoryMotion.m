@@ -76,6 +76,6 @@ function [onset, duration] = doAuditoryMotion(cfg, thisEvent)
     % Get the end time
     waitForEndOfPlayback = 1; % hard coding that will need to be moved out
     [onset, ~, ~, estStopTime] = PsychPortAudio('Stop', cfg.audio.pahandle, ...
-        waitForEndOfPlayback);
+                                                waitForEndOfPlayback);
 
     duration = estStopTime - onset;

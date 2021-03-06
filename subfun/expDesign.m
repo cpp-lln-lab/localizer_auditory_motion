@@ -86,23 +86,23 @@ function [cfg] = expDesign(cfg, displayFigs)
             % 2 events apart
             % - targets cannot be on the first or last event of a block
 
-            % Fixation targets
             nbTarget = numTargetsForEachBlock(iBlock);
 
+            % Fixation targets
+            forbiddenPositions = [];
             chosenPosition = setTargetPositionInSequence( ...
-                NB_EVENTS_PER_BLOCK, ...
-                nbTarget, ...
-                [1 NB_EVENTS_PER_BLOCK]);
+                                                         NB_EVENTS_PER_BLOCK, ...
+                                                         nbTarget, ...
+                                                         forbiddenPositions);
 
             fixationTargets(iBlock, chosenPosition) = 1;
 
             % Sound targets
-            nbTarget = numTargetsForEachBlock(iBlock);
-
+            forbiddenPositions = [chosenPosition];
             chosenPosition = setTargetPositionInSequence( ...
-                NB_EVENTS_PER_BLOCK, ...
-                nbTarget, ...
-                [1 NB_EVENTS_PER_BLOCK]);
+                                                         NB_EVENTS_PER_BLOCK, ...
+                                                         nbTarget, ...
+                                                         forbiddenPositions);
 
             soundTargets(iBlock, chosenPosition) = 1;
 
@@ -150,8 +150,8 @@ function cfg = setDirections(cfg)
     NB_REPEATS_BASE_VECTOR = NB_EVENTS_PER_BLOCK / length(STATIC_DIRECTIONS);
 
     static_directions = repmat( ...
-        STATIC_DIRECTIONS, ...
-        1, NB_REPEATS_BASE_VECTOR);
+                               STATIC_DIRECTIONS, ...
+                               1, NB_REPEATS_BASE_VECTOR);
 
     for iMotionBlock = 1:NB_REPETITIONS
 
