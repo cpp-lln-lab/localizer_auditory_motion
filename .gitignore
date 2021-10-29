@@ -6,13 +6,14 @@
 *.tsv
 *.mat
 
+output
+
 ## virtual env
 env/
 venv/
 
 ## visual studio code
 .vscode
-
 
 ## MATLAB / OCTAVE gitignore template
 
