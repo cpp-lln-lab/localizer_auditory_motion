@@ -78,7 +78,7 @@ Any details of the experiment can be changed in `setParameters.m` (e.g., experim
 - Task(s)
   - Instructions
   - Task #1 parameters
-   
+
 #### Let the scanner pace the experiment
 
 Set `cfg.pacedByTriggers.do` to `true` and you can then set all the details in this `if` block
