@@ -12,7 +12,7 @@ function cfg = setParameters
 
     cfg.subject.subjectGrp = 'pilot';
     cfg.subject.sessionNb = 1;
-    cfg.subject.askGrpSess = [false false];    
+    cfg.subject.askGrpSess = [true true];    
 
     %% Debug mode settings
 
@@ -162,8 +162,8 @@ function cfg = setMRI(cfg)
 
     cfg.mri.repetitionTime = 1.8;
 
-    cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
+    cfg.bids.mri.Instructions = ['1 - Detect the RED fixation cross\n' ...
                                  '2 - Detected the shorter repeated sounds'];
-    cfg.bids.MRI.TaskDescription = [];
+    cfg.bids.mri.TaskDescription = [];
 
 end
