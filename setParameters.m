@@ -17,9 +17,9 @@ function cfg = setParameters
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
     cfg.verbose = 1;
-    cfg.skipSyncTests = 0;
+    cfg.skipSyncTests = 1;
 
-    cfg.audio.devIdx = 3; % 5 %11
+%     cfg.audio.devIdx = 5; %3 %11
 
     %% Engine parameters
 
@@ -37,7 +37,7 @@ function cfg = setParameters
     cfg = setMRI(cfg);
     cfg.suffix.acquisition = '0p75mmEv';
 
-    cfg.pacedByTriggers.do = false;
+    cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
 
@@ -47,7 +47,7 @@ function cfg = setParameters
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
     cfg.design.motionDirections = [0 180];
-    cfg.design.nbRepetitions = 21;
+    cfg.design.nbRepetitions = 22;
     cfg.design.nbEventsPerBlock = 6;
 
     %% Timing
@@ -77,7 +77,9 @@ function cfg = setParameters
         cfg.pacedByTriggers.nbTriggers = 1;
 
         cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
-
+        
+        % Time between blocs in nb of triggers (remember to consider the nb trigger to wait + 1)
+        cfg.timing.triggerIBI = 4;
         % Time between blocs in secs
         cfg.timing.IBI = 0;
         % Time between events in secs
@@ -154,7 +156,7 @@ end
 function cfg = setMRI(cfg)
     % letter sent by the trigger to sync stimulation and volume acquisition
     cfg.mri.triggerKey = 't';
-    cfg.mri.triggerNb = 5;
+    cfg.mri.triggerNb = 0;
 
     cfg.mri.repetitionTime = 1.8;
 
