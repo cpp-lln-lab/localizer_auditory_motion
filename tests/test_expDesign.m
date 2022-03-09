@@ -8,8 +8,6 @@ end
 
 function test_exDesignBasic()
 
-    initEnv();
-
     cfg.design.motionType = 'translation';
     cfg.design.motionDirections = [0 0 180 180];
     cfg.design.names = {'static'; 'motion'};
@@ -42,8 +40,6 @@ function test_exDesignBasic()
 end
 
 function test_exDesignBasicOtherSetUp()
-
-    initEnv();
 
     cfg.design.motionType = 'translation';
     cfg.design.motionDirections = [0 90 180 270];

@@ -6,6 +6,10 @@
 *.tsv
 *.mat
 
+% tests and coverage
+coverage*
+test_report.log
+
 output
 
 ## virtual env
