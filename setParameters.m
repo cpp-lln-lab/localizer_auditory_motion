@@ -12,7 +12,7 @@ function cfg = setParameters
 
     cfg.subject.subjectGrp = 'pilot';
     cfg.subject.sessionNb = 1;
-    cfg.subject.askGrpSess = [true true];    
+    cfg.subject.askGrpSess = [true true];
 
     %% Debug mode settings
 
