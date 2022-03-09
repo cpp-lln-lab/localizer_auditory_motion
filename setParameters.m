@@ -26,27 +26,22 @@ function cfg = setParameters
     cfg.audio.devIdx = 3; % 5 %11
 
     %% Engine parameters
-
     cfg.testingDevice = 'mri';
     cfg.eyeTracker.do = false;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
 
-    % Keyboards
     cfg = setKeyboards(cfg);
 
-    % MRI settings
-
     cfg = setMRI(cfg);
-    cfg.suffix.acquisition = '0p75mmEv';
 
-    cfg.pacedByTriggers.do = false;
+    cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
 
-    %     cfg.design.motionType = 'translation';
-    %     cfg.design.motionType = 'radial';
+    % cfg.design.motionType = 'translation';
+    % cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
