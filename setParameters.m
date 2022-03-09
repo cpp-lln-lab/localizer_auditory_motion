@@ -10,6 +10,10 @@ function cfg = setParameters
     % change that if you want the data to be saved somewhere else
     cfg.dir.output = fullfile(fileparts(mfilename('fullpath')), 'output');
 
+    cfg.subject.subjectGrp = 'pilot';
+    cfg.subject.sessionNb = 1;
+    cfg.subject.askGrpSess = [true true];
+
     %% Debug mode settings
 
     cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
@@ -22,27 +26,22 @@ function cfg = setParameters
     cfg.audio.devIdx = 3; % 5 %11
 
     %% Engine parameters
-
     cfg.testingDevice = 'mri';
     cfg.eyeTracker.do = false;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
 
-    % Keyboards
     cfg = setKeyboards(cfg);
 
-    % MRI settings
-
     cfg = setMRI(cfg);
-    cfg.suffix.acquisition = '0p75mmEv';
 
-    cfg.pacedByTriggers.do = false;
+    cfg.pacedByTriggers.do = true;
 
     %% Experiment Design
 
-    %     cfg.design.motionType = 'translation';
-    %     cfg.design.motionType = 'radial';
+    % cfg.design.motionType = 'translation';
+    % cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
@@ -158,8 +157,8 @@ function cfg = setMRI(cfg)
 
     cfg.mri.repetitionTime = 1.8;
 
-    cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
+    cfg.bids.mri.Instructions = ['1 - Detect the RED fixation cross\n' ...
                                  '2 - Detected the shorter repeated sounds'];
-    cfg.bids.MRI.TaskDescription = [];
+    cfg.bids.mri.TaskDescription = [];
 
 end
