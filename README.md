@@ -1,11 +1,5 @@
 [![](https://img.shields.io/badge/Octave-CI-blue?logo=Octave&logoColor=white)](https://github.com/cpp-lln-lab/localizer_auditory_motion/actions)
-
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
-
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 ![](https://github.com/cpp-lln-lab/localizer_auditory_motion/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/cpp-lln-lab/localizer_auditory_motion/branch/master/graph/badge.svg)](https://codecov.io/gh/cpp-lln-lab/localizer_auditory_motion)
 [![Build Status](https://travis-ci.com/cpp-lln-lab/localizer_auditory_motion.svg?branch=master)](https://travis-ci.com/cpp-lln-lab/localizer_auditory_motion)
@@ -32,7 +26,8 @@ experiment mode, motion stimuli details, exp. design, etc.)
 
 ### `setParameters`
 
-`setParameters.m` is the core engine of the experiment. See [docs/configuration](.docs/../docs/configuration.md) for more information.
+`setParameters.m` is the core engine of the experiment. See
+[docs/configuration](.docs/../docs/configuration.md) for more information.
 
 ## Requirements
 
@@ -55,8 +50,6 @@ repository. You can install it all with git by doing.
 ```bash
 git clone --recurse-submodules https://github.com/cpp-lln-lab/localizer_auditory_motion.git
 ```
-
-
 
 ## Contributors ✨
 
