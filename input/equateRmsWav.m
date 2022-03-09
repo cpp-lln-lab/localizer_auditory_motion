@@ -19,7 +19,7 @@ function equateRmsWav(subjName)
     targetWavFn = ['sub-', subjName, '_LRL.wav'];
     runFunction(referenceWavFn, targetWavFn);
 
-    targetWavFn = [subjName, '_RLR.wav'];
+    targetWavFn = ['sub-', subjName, '_RLR.wav'];
     runFunction(referenceWavFn, targetWavFn);
 
     % Targets
@@ -28,10 +28,10 @@ function equateRmsWav(subjName)
 
     cd(subjectDir);
 
-    targetWavFn = [subjName, '_LRL_T.wav'];
+    targetWavFn = ['sub-', subjName, '_LRL_T.wav'];
     runFunction(referenceWavFn, targetWavFn);
 
-    targetWavFn = [subjName, '_RLR_T.wav'];
+    targetWavFn = ['sub-', subjName, '_RLR_T.wav'];
     runFunction(referenceWavFn, targetWavFn);
 
 end
@@ -62,7 +62,7 @@ function runFunction (referenceWavFn, targetWavFn)
     disp('rms of the final wav file');
     disp(finalRms);
 
-    audiowrite([targetWavFn(1:end - 4), '_rms.wav'], finalWav, eferenceFs);
+    audiowrite([targetWavFn(1:end - 4), '_rms.wav'], finalWav, referenceFs);
 
     %% plot the reference wav and final wav files
     figure();
