@@ -10,6 +10,10 @@ function cfg = setParameters
     % change that if you want the data to be saved somewhere else
     cfg.dir.output = fullfile(fileparts(mfilename('fullpath')), 'output');
 
+    cfg.subject.subjectGrp = 'pilot';
+    cfg.subject.sessionNb = 1;
+    cfg.subject.askGrpSess = [false false];    
+
     %% Debug mode settings
 
     cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
