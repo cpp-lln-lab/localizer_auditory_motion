@@ -8,8 +8,7 @@ function cfg = setParameters
     % by default the data will be stored in an output folder created where the
     % setParamters.m file is
     % change that if you want the data to be saved somewhere else
-    cfg.dir.output = fullfile( ...
-                              fileparts(mfilename('fullpath')), 'output');
+    cfg.dir.output = fullfile(fileparts(mfilename('fullpath')), 'output');
 
     %% Debug mode settings
 
