@@ -19,7 +19,7 @@ function cfg = setParameters
     cfg.verbose = 1;
     cfg.skipSyncTests = 1;
 
-%     cfg.audio.devIdx = 5; %3 %11
+    %     cfg.audio.devIdx = 5; %3 %11
 
     %% Engine parameters
 
@@ -77,7 +77,7 @@ function cfg = setParameters
         cfg.pacedByTriggers.nbTriggers = 1;
 
         cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
-        
+
         % Time between blocs in nb of triggers (remember to consider the nb trigger to wait + 1)
         cfg.timing.triggerIBI = 4;
         % Time between blocs in secs
