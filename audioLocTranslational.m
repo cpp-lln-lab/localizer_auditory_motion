@@ -88,8 +88,8 @@ try
 
             thisEvent.isStim = logFile.isStim;
 
-            % we wait for a trigger every 2 events
-            if cfg.pacedByTriggers.do && mod(iEvent, 2) == 1
+            % we wait for a trigger every events
+            if cfg.pacedByTriggers.do
                 waitForTrigger(cfg, ...
                                cfg.keyboard.responseBox, ...
                                cfg.pacedByTriggers.quietMode, ...
@@ -131,7 +131,16 @@ try
         eyeTracker('StopRecordings', cfg);
 
         waitFor(cfg, cfg.timing.IBI);
-
+        
+        % IBI trigger paced
+        if cfg.pacedByTriggers.do
+            waitForTrigger( ...
+                cfg, ...
+                cfg.keyboard.responseBox, ...
+                cfg.pacedByTriggers.quietMode, ...
+                cfg.timing.triggerIBI);
+        end
+        
         % trigger monitoring
         triggerEvents = getResponse('check', cfg.keyboard.responseBox, cfg, ...
                                     getOnlyPress);
