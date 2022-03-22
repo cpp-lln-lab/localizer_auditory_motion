@@ -24,7 +24,7 @@ function cfg = setParameters
     cfg.skipSyncTests = 0;
 
     %     cfg.audio.devIdx = 5; %3 %11
-    
+
     % fixation cross displacement in degrees of visual angles
     % this will also shift the whole FOV
     cfg.fixation.xDisplacement = -1.171228;
@@ -112,8 +112,8 @@ function cfg = setParameters
     cfg.fixation.color = cfg.color.white;
     cfg.fixation.width = .5;
     cfg.fixation.lineWidthPix = 3;
-%     cfg.fixation.xDisplacement = 0;
-%     cfg.fixation.yDisplacement = 0;
+    %     cfg.fixation.xDisplacement = 0;
+    %     cfg.fixation.yDisplacement = 0;
 
     cfg.target.maxNbPerBlock = 1;
     cfg.target.duration = 0.5; % In secs
