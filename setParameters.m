@@ -16,18 +16,23 @@ function cfg = setParameters
 
     %% Debug mode settings
 
-    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = 1; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
     cfg.verbose = 1;
-    cfg.skipSyncTests = 1;
+    cfg.skipSyncTests = 0;
 
     %     cfg.audio.devIdx = 5; %3 %11
 
+    % fixation cross displacement in degrees of visual angles
+    % this will also shift the whole FOV
+    cfg.fixation.xDisplacement = -1.171228;
+    cfg.fixation.yDisplacement = -0.620751;
+
     %% Engine parameters
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = false;
+    cfg.eyeTracker.do = true;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
@@ -36,7 +41,7 @@ function cfg = setParameters
 
     cfg = setMRI(cfg);
 
-    cfg.pacedByTriggers.do = true;
+    cfg.pacedByTriggers.do = false;
 
     %% Experiment Design
 
@@ -61,7 +66,7 @@ function cfg = setParameters
     %     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
-    cfg.timing.IBI = 0;
+    cfg.timing.IBI = 5.4;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
@@ -107,8 +112,8 @@ function cfg = setParameters
     cfg.fixation.color = cfg.color.white;
     cfg.fixation.width = .5;
     cfg.fixation.lineWidthPix = 3;
-    cfg.fixation.xDisplacement = 0;
-    cfg.fixation.yDisplacement = 0;
+    %     cfg.fixation.xDisplacement = 0;
+    %     cfg.fixation.yDisplacement = 0;
 
     cfg.target.maxNbPerBlock = 1;
     cfg.target.duration = 0.5; % In secs
@@ -155,7 +160,7 @@ end
 function cfg = setMRI(cfg)
     % letter sent by the trigger to sync stimulation and volume acquisition
     cfg.mri.triggerKey = 't';
-    cfg.mri.triggerNb = 0;
+    cfg.mri.triggerNb = 5;
 
     cfg.mri.repetitionTime = 1.8;
 
