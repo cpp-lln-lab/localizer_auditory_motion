@@ -86,7 +86,7 @@ jobs:
                   echo -e "\nswitching submodule ${path} to ${branch}"
                   cd "${path}" || exit
                   git fetch --all
-                  git checkout origin/${branch}
+                  git switch ${branch}
                   cd "${start_dir}"
               done
               git submodule update --remote --merge
