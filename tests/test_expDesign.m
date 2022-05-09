@@ -70,6 +70,8 @@ function test_exDesignBasicOtherSetUp()
     assertTrue(all(sum(cfg.design.fixationTargets, 2) <= cfg.target.maxNbPerBlock));
 
     % make sure that targets are not presented too often in the same position
-    assertTrue(all(sum(cfg.design.fixationTargets) < cfg.design.nbRepetitions - 1));
+    if ~isOctave
+        assertTrue(all(sum(cfg.design.fixationTargets) < cfg.design.nbRepetitions - 1));
+    end
 
 end
