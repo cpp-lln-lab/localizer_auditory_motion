@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+
+title: "CPP localizer auditory motion"
+
+version: 0.2.4
+
+abstract: A localizer for auditory motion sensitive brain regions.
+
+message: "If you use this software, please cite it as below."
+
+repository-code: "https://github.com/cpp-lln-lab/localizer_auditory_motion.git"
+
+contact:
+  - affiliation: "Université catholique de Louvain"
+    email: remi.gau@uclouvain.be
+    family-names: Gau
+    given-names: Rémi
+
+authors:
+  - family-names: "Gau"
+    given-names: "Rémi"
+    orcid: "https://orcid.org/0000-0002-1535-9767"
+    affiliation: "Université catholique de Louvain"
+
+  - family-names: "Barilari"
+    given-names: "Marco"
+    orcid: "https://orcid.org/0000-0002-3313-3120"
+    affiliation: "Université catholique de Louvain"
+
+
+  - family-names: "Rezk"
+    given-names: "Mohamed"
+    orcid: "https://orcid.org/0000-0002-1866-8645"
+    affiliation: "Université catholique de Louvain"
+
+license: MIT
+
+keywords:
+  - BIDS
+  - brain imaging data structure
+  - neuroscience
+  - MATLAB
+  - Octave
