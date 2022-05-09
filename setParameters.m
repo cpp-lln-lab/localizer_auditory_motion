@@ -8,47 +8,50 @@ function cfg = setParameters
     % by default the data will be stored in an output folder created where the
     % setParamters.m file is
     % change that if you want the data to be saved somewhere else
-    cfg.dir.output = fullfile( ...
-                              fileparts(mfilename('fullpath')), 'output');
+    cfg.dir.output = fullfile(fileparts(mfilename('fullpath')), 'output');
+
+    cfg.subject.subjectGrp = 'pilot';
+    cfg.subject.sessionNb = 1;
+    cfg.subject.askGrpSess = [true true];
 
     %% Debug mode settings
 
-    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = 1; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = false; % To test with trasparent full size screen
 
     cfg.verbose = 1;
     cfg.skipSyncTests = 0;
 
-    cfg.audio.devIdx = 3; % 5 %11
+    %     cfg.audio.devIdx = 5; %3 %11
+
+    % fixation cross displacement in degrees of visual angles
+    % this will also shift the whole FOV
+    cfg.fixation.xDisplacement = -1.171228;
+    cfg.fixation.yDisplacement = -0.620751;
 
     %% Engine parameters
-
     cfg.testingDevice = 'mri';
-    cfg.eyeTracker.do = false;
+    cfg.eyeTracker.do = true;
     cfg.audio.do = true;
 
     cfg = setMonitor(cfg);
 
-    % Keyboards
     cfg = setKeyboards(cfg);
 
-    % MRI settings
-
     cfg = setMRI(cfg);
-    cfg.suffix.acquisition = '0p75mmEv';
 
     cfg.pacedByTriggers.do = false;
 
     %% Experiment Design
 
-    %     cfg.design.motionType = 'translation';
-    %     cfg.design.motionType = 'radial';
+    % cfg.design.motionType = 'translation';
+    % cfg.design.motionType = 'radial';
     cfg.design.motionType = 'translation';
     cfg.design.names = {'static'; 'motion'};
     % 0: L--R--L; 180: R--L--R;
     cfg.design.motionDirections = [0 180];
-    cfg.design.nbRepetitions = 21;
+    cfg.design.nbRepetitions = 22;
     cfg.design.nbEventsPerBlock = 6;
 
     %% Timing
@@ -63,7 +66,7 @@ function cfg = setParameters
     %     cfg.timing.eventDuration = 0.850; % second
 
     % Time between blocs in secs
-    cfg.timing.IBI = 0;
+    cfg.timing.IBI = 5.4;
     % Time between events in secs
     cfg.timing.ISI = 0;
     % Number of seconds before the motion stimuli are presented
@@ -79,6 +82,8 @@ function cfg = setParameters
 
         cfg.timing.eventDuration = cfg.mri.repetitionTime / 2 - 0.04; % second
 
+        % Time between blocs in nb of triggers (remember to consider the nb trigger to wait + 1)
+        cfg.timing.triggerIBI = 4;
         % Time between blocs in secs
         cfg.timing.IBI = 0;
         % Time between events in secs
@@ -107,8 +112,8 @@ function cfg = setParameters
     cfg.fixation.color = cfg.color.white;
     cfg.fixation.width = .5;
     cfg.fixation.lineWidthPix = 3;
-    cfg.fixation.xDisplacement = 0;
-    cfg.fixation.yDisplacement = 0;
+    %     cfg.fixation.xDisplacement = 0;
+    %     cfg.fixation.yDisplacement = 0;
 
     cfg.target.maxNbPerBlock = 1;
     cfg.target.duration = 0.5; % In secs
@@ -159,8 +164,8 @@ function cfg = setMRI(cfg)
 
     cfg.mri.repetitionTime = 1.8;
 
-    cfg.bids.MRI.Instructions = ['1 - Detect the RED fixation cross\n' ...
+    cfg.bids.mri.Instructions = ['1 - Detect the RED fixation cross\n' ...
                                  '2 - Detected the shorter repeated sounds'];
-    cfg.bids.MRI.TaskDescription = [];
+    cfg.bids.mri.TaskDescription = [];
 
 end
