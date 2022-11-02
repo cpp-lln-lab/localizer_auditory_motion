@@ -2,7 +2,7 @@ cff-version: 1.2.0
 
 title: "CPP localizer auditory motion"
 
-version: 0.2.4
+version: 0.3.0
 
 abstract: A localizer for auditory motion sensitive brain regions.
 
